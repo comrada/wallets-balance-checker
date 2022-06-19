@@ -15,7 +15,7 @@ public interface WalletRepository extends JpaRepository<Wallet, WalletId> {
       select * from wallets w
       where
         w.asset in :assets and
-        (w.checked_at <= current_timestamp - interval '1 day' or
+        (w.checked_at <= current_timestamp - interval '1' day or
         w.checked_at is null) and
         w.locked = false
       limit 1
