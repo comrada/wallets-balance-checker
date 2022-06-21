@@ -32,8 +32,8 @@ class WalletSpringAdapterIntegrationTest {
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertTrue(xrpWallet.isLocked());
-    assertEquals("XRP", xrpWallet.getId().getAsset());
-    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getId().getAddress());
+    assertEquals("XRP", xrpWallet.getAsset());
+    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getAddress());
   }
 
   @Test

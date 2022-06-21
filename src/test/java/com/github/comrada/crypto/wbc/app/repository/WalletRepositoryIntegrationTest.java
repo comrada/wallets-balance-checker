@@ -28,8 +28,8 @@ class WalletRepositoryIntegrationTest {
     Optional<Wallet> foundXrpWallet = testRepository.selectForUpdate(singleton("XRP"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
-    assertEquals("XRP", xrpWallet.getId().getAsset());
-    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getId().getAddress());
+    assertEquals("XRP", xrpWallet.getAsset());
+    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getAddress());
   }
 
   @Test
@@ -38,8 +38,8 @@ class WalletRepositoryIntegrationTest {
     Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("ETH"));
     assertTrue(foundEthWallet.isPresent());
     Wallet ethWallet = foundEthWallet.get();
-    assertEquals("ETH", ethWallet.getId().getAsset());
-    assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getId().getAddress());
+    assertEquals("ETH", ethWallet.getAsset());
+    assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getAddress());
   }
 
   @Test
@@ -65,7 +65,7 @@ class WalletRepositoryIntegrationTest {
     Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("ETH"));
     assertTrue(foundEthWallet.isPresent());
     Wallet ethWallet = foundEthWallet.get();
-    assertEquals("ETH", ethWallet.getId().getAsset());
-    assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getId().getAddress());
+    assertEquals("ETH", ethWallet.getAsset());
+    assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getAddress());
   }
 }

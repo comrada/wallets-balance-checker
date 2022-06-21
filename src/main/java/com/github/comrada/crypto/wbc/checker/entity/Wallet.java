@@ -78,6 +78,14 @@ public class Wallet {
     this.locked = locked;
   }
 
+  public String getAsset() {
+    return id.getAsset();
+  }
+
+  public String getAddress() {
+    return id.getAddress();
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
