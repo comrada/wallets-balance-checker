@@ -20,6 +20,7 @@
   <properties>
     <java.version>17</java.version>
     <spring-native.version>0.12.0</spring-native.version>
+    <guava.version>31.1-jre</guava.version>
   </properties>
 
   <dependencies>
@@ -53,6 +54,11 @@
       <artifactId>lombok</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>${guava.version}</version>
+    </dependency>
 
     <!--	Tests	-->
     <dependency>
@@ -63,6 +69,11 @@
     <dependency>
       <groupId>com.h2database</groupId>
       <artifactId>h2</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.awaitility</groupId>
+      <artifactId>awaitility</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
