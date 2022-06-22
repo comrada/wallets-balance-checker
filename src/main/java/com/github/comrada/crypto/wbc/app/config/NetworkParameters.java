@@ -4,8 +4,10 @@ import static java.util.Collections.unmodifiableSet;
 import static java.util.Objects.requireNonNull;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toUnmodifiableMap;
+import static java.util.stream.Collectors.toUnmodifiableSet;
 
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -17,12 +19,18 @@ public class NetworkParameters {
 
   private Set<Blockchain> blockchains = new HashSet<>();
   private Map<String, Blockchain> configMap;
+  private Set<String> enabledNetworks = new HashSet<>();
+
+  public NetworkParameters() {
+  }
+
+  public NetworkParameters(Set<Blockchain> blockchains, Set<String> enabledNetworks) {
+    this.blockchains = requireNonNull(blockchains);
+    this.enabledNetworks = requireNonNull(enabledNetworks);
+  }
 
   public Set<Blockchain> getBlockchains() {
     return unmodifiableSet(blockchains);
-  }
-
-  public NetworkParameters() {
   }
 
   public void setBlockchains(Set<Blockchain> blockchains) {
@@ -30,12 +38,18 @@ public class NetworkParameters {
     this.configMap = blockchains.stream().collect(toUnmodifiableMap(Blockchain::getName, identity()));
   }
 
-  public NetworkParameters(Set<Blockchain> blockchains) {
-    this.blockchains = requireNonNull(blockchains);
+  public Blockchain getConfigFor(String network) {
+    return configMap.get(network);
   }
 
-  public Map<String, Blockchain> getConfigMap() {
-    return configMap;
+  public Set<String> getEnabledNetworks() {
+    return enabledNetworks;
+  }
+
+  public void setEnabledNetworks(String enabledNetworks) {
+    this.enabledNetworks = Arrays.stream(enabledNetworks.split(","))
+        .map(String::trim)
+        .collect(toUnmodifiableSet());
   }
 
   public static final class Blockchain implements NetworkConfig {
