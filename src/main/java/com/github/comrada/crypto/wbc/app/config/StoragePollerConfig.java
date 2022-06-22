@@ -9,8 +9,10 @@ import com.github.comrada.crypto.wbc.checker.scheduler.StoragePoller;
 import java.time.Duration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
+@Profile("!test")
 public class StoragePollerConfig {
 
   @Bean
