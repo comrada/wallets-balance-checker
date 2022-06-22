@@ -21,6 +21,7 @@
     <java.version>17</java.version>
     <spring-native.version>0.12.0</spring-native.version>
     <guava.version>31.1-jre</guava.version>
+    <web3j.version>4.9.2</web3j.version>
   </properties>
 
   <dependencies>
@@ -58,6 +59,13 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>${guava.version}</version>
+    </dependency>
+
+    <!--  Blockchains  -->
+    <dependency>
+      <groupId>org.web3j</groupId>
+      <artifactId>core</artifactId>
+      <version>${web3j.version}</version>
     </dependency>
 
     <!--	Tests	-->

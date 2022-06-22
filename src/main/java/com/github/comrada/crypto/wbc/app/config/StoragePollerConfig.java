@@ -21,7 +21,7 @@ public class StoragePollerConfig {
 
   @Bean
   DelayGenerator delayGenerator() {
-    return new LimitedFixedDelayGenerator(Duration.ofSeconds(5), 3);
+    return new LimitedFixedDelayGenerator(Duration.ofSeconds(60), 3);
   }
 
   @Bean

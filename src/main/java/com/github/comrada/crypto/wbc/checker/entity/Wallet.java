@@ -105,6 +105,7 @@ public class Wallet {
 
   @Override
   public String toString() {
-    return "asset: " + id.getAsset() + ", address: " + id.getAddress() + ", balance: " + balance;
+    return "asset: " + id.getAsset() + ", address: " + id.getAddress() +
+        (balance != null ? ", balance: " + balance : "");
   }
 }
