@@ -6,20 +6,29 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.github.comrada.crypto.wbc.checker.entity.Wallet;
 import com.github.comrada.crypto.wbc.checker.entity.WalletId;
 import java.math.BigDecimal;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 class BalanceUpdaterIntegrationTest {
 
+  private NetworksManager networksManager;
+  private WalletStorage walletStorage;
+
+  @BeforeEach
+  void initMocks() {
+    networksManager = mock(NetworksManager.class);
+    walletStorage = mock(WalletStorage.class);
+  }
+
   @Test
   void accept() {
-    NetworksManager networksManager = mock(NetworksManager.class);
-    WalletStorage walletStorage = mock(WalletStorage.class);
     Wallet wallet = mockLockedWallet();
     when(networksManager.balance(wallet)).thenReturn(BigDecimal.valueOf(123));
     BalanceUpdater balanceUpdater = new BalanceUpdater(networksManager, walletStorage);
@@ -33,6 +42,18 @@ class BalanceUpdaterIntegrationTest {
     assertEquals(BigDecimal.valueOf(123), updatedWallet.getBalance());
     assertFalse(updatedWallet.isLocked());
     assertNotNull(updatedWallet.getCheckedAt());
+  }
+
+  @Test
+  void whenBalanceHasNotChanged_thenDoNothing() {
+    Wallet wallet = mockLockedWallet();
+    wallet.setBalance(BigDecimal.valueOf(123));
+    when(networksManager.balance(wallet)).thenReturn(BigDecimal.valueOf(123));
+    BalanceUpdater balanceUpdater = new BalanceUpdater(networksManager, walletStorage);
+    balanceUpdater.accept(wallet);
+
+    verify(networksManager, times(1)).balance(wallet);
+    verifyNoInteractions(walletStorage);
   }
 
   private Wallet mockLockedWallet() {
