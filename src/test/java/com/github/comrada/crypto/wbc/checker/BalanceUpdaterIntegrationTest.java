@@ -58,7 +58,7 @@ class BalanceUpdaterIntegrationTest {
 
   private Wallet mockLockedWallet() {
     Wallet wallet = new Wallet();
-    WalletId id = new WalletId("XRP", "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ");
+    WalletId id = new WalletId("Ripple", "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ");
     wallet.setId(id);
     wallet.setLocked(true);
     wallet.setBalance(BigDecimal.ZERO);

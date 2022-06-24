@@ -14,11 +14,11 @@ public interface WalletRepository extends JpaRepository<Wallet, WalletId> {
   @Query(value = """
       select * from wallets w
       where
-        w.asset in :assets and
+        w.blockchain in :blockchains and
         (w.checked_at <= current_timestamp - interval '1' day or
         w.checked_at is null) and
         w.locked = false
       limit 1
       """, nativeQuery = true)
-  Optional<Wallet> selectForUpdate(Set<String> assets);
+  Optional<Wallet> selectForUpdate(Set<String> blockchains);
 }

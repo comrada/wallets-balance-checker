@@ -9,10 +9,10 @@ public interface WalletStorage {
   /**
    * Finds a wallet in the database that meets certain requirements and locks it.
    *
-   * @param assets for which we need to find a wallet
+   * @param blockchains for which we need to find a wallet
    * @return a wallet or {@link Optional#empty()} if no wallet meets the conditions
    */
-  Optional<Wallet> selectForUpdate(Set<String> assets);
+  Optional<Wallet> selectForUpdate(Set<String> blockchains);
 
   Wallet update(Wallet wallet);
 }

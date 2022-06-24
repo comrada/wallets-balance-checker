@@ -21,15 +21,15 @@ class NetworksManagerIntegrationTest {
 
   @BeforeEach
   void initNetworksManager() {
-    xrpWallet = mockWallet("XRP", "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ");
-    ethWallet = mockWallet("ETH", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
+    xrpWallet = mockWallet("Ripple", "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ");
+    ethWallet = mockWallet("Ethereum", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
     BlockchainApi ripple = mock(BlockchainApi.class);
     when(ripple.balance((xrpWallet.getAddress()))).thenReturn(BigDecimal.valueOf(1));
     BlockchainApi ethereum = mock(BlockchainApi.class);
     when(ethereum.balance((ethWallet.getAddress()))).thenReturn(BigDecimal.valueOf(2));
     networksManager = new NetworksManager(Map.of(
-        "XRP", ripple,
-        "ETH", ethereum
+        "Ripple", ripple,
+        "Ethereum", ethereum
     ));
   }
 
@@ -40,13 +40,13 @@ class NetworksManagerIntegrationTest {
   }
 
   @Test
-  void assets() {
-    assertEquals(Set.of("XRP", "ETH"), networksManager.assets());
+  void blockchains() {
+    assertEquals(Set.of("Ripple", "Ethereum"), networksManager.blockchains());
   }
 
-  private Wallet mockWallet(String asset, String address) {
+  private Wallet mockWallet(String blockchain, String address) {
     Wallet wallet = new Wallet();
-    WalletId id = new WalletId(asset, address);
+    WalletId id = new WalletId(blockchain, address);
     wallet.setId(id);
     return wallet;
   }

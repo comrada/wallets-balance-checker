@@ -37,9 +37,4 @@ public class RippleNet implements BlockchainApi {
       throw new NetworkException(e);
     }
   }
-
-  @Override
-  public String asset() {
-    return "XRP";
-  }
 }

@@ -23,12 +23,12 @@ public class BalanceUpdater implements Consumer<Wallet> {
   @Override
   public void accept(Wallet wallet) {
     BigDecimal balance = networksManager.balance(wallet);
-    if (!wallet.getBalance().equals(balance)) {
+    if (wallet.getBalance() == null || !wallet.getBalance().equals(balance)) {
       wallet.setBalance(balance);
       wallet.setCheckedAt(Instant.now());
       wallet.setLocked(false);
-      walletStorage.update(wallet);
-      LOGGER.info("Updated: {}", wallet);
+      Wallet updated = walletStorage.update(wallet);
+      LOGGER.info("Updated: {}", updated);
     } else {
       LOGGER.info("Wallet balance has not changed");
     }

@@ -18,7 +18,7 @@ public class StoragePollerConfig {
   @Bean
   StoragePoller storagePoller(WalletStorage walletStorage, BalanceUpdater balanceUpdater,
       NetworksManager networksManager, DelayGenerator delayGenerator) {
-    return new StoragePoller(walletStorage, delayGenerator, networksManager.assets(), balanceUpdater);
+    return new StoragePoller(walletStorage, delayGenerator, networksManager.blockchains(), balanceUpdater);
   }
 
   @Bean

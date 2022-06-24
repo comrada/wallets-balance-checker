@@ -26,14 +26,14 @@ public class StoragePoller implements AutoCloseable {
   private final ExecutorService executor;
   private final WalletStorage walletStorage;
   private final DelayGenerator delayGenerator;
-  private final Set<String> assetsToPoll;
+  private final Set<String> blockchainsToPoll;
   private final Consumer<Wallet> walletHandler;
 
-  public StoragePoller(WalletStorage walletStorage, DelayGenerator delayGenerator, Set<String> assetsToPoll,
+  public StoragePoller(WalletStorage walletStorage, DelayGenerator delayGenerator, Set<String> blockchainsToPoll,
       Consumer<Wallet> walletHandler) {
     this.walletStorage = requireNonNull(walletStorage);
     this.delayGenerator = requireNonNull(delayGenerator);
-    this.assetsToPoll = requireNonNull(assetsToPoll);
+    this.blockchainsToPoll = requireNonNull(blockchainsToPoll);
     this.walletHandler = requireNonNull(walletHandler);
     this.executor = createExecutor();
     runTask(this::poll, Duration.ZERO);
@@ -47,7 +47,7 @@ public class StoragePoller implements AutoCloseable {
   }
 
   private void poll() {
-    Optional<Wallet> foundWallet = walletStorage.selectForUpdate(assetsToPoll);
+    Optional<Wallet> foundWallet = walletStorage.selectForUpdate(blockchainsToPoll);
     if (foundWallet.isPresent()) {
       LOGGER.info("Start checking: {}", foundWallet.get());
       handleWithDelay(foundWallet.get(), Duration.ZERO);

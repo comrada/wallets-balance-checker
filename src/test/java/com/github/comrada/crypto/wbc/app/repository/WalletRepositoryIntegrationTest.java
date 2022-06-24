@@ -25,47 +25,47 @@ class WalletRepositoryIntegrationTest {
   @Test
   @Sql("wallets.sql")
   void selectXrpForUpdate() {
-    Optional<Wallet> foundXrpWallet = testRepository.selectForUpdate(singleton("XRP"));
+    Optional<Wallet> foundXrpWallet = testRepository.selectForUpdate(singleton("Ripple"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
-    assertEquals("XRP", xrpWallet.getAsset());
+    assertEquals("Ripple", xrpWallet.getBlockchain());
     assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getAddress());
   }
 
   @Test
   @Sql("wallets.sql")
   void selectEthForUpdate() {
-    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("ETH"));
+    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("Ethereum"));
     assertTrue(foundEthWallet.isPresent());
     Wallet ethWallet = foundEthWallet.get();
-    assertEquals("ETH", ethWallet.getAsset());
+    assertEquals("Ethereum", ethWallet.getBlockchain());
     assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getAddress());
   }
 
   @Test
   void whenWalletIsRecentlyUpdated_thenNothingFound() {
     Wallet wallet = new Wallet();
-    WalletId id = new WalletId("ETH", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
+    WalletId id = new WalletId("Ethereum", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
     wallet.setId(id);
     wallet.setExchange(false);
     wallet.setCheckedAt(Instant.now());
     testRepository.saveAndFlush(wallet);
-    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("ETH"));
+    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("Ethereum"));
     assertFalse(foundEthWallet.isPresent());
   }
 
   @Test
   void whenWalletIsOutdated_thenItIsFound() {
     Wallet wallet = new Wallet();
-    WalletId id = new WalletId("ETH", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
+    WalletId id = new WalletId("Ethereum", "0x0259512d4c4386327a5a2faf78fbabed7202c971");
     wallet.setId(id);
     wallet.setExchange(false);
     wallet.setCheckedAt(Instant.parse("2022-06-18T00:00:00Z"));
     testRepository.saveAndFlush(wallet);
-    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("ETH"));
+    Optional<Wallet> foundEthWallet = testRepository.selectForUpdate(singleton("Ethereum"));
     assertTrue(foundEthWallet.isPresent());
     Wallet ethWallet = foundEthWallet.get();
-    assertEquals("ETH", ethWallet.getAsset());
+    assertEquals("Ethereum", ethWallet.getBlockchain());
     assertEquals("0x0259512d4c4386327a5a2faf78fbabed7202c971", ethWallet.getAddress());
   }
 }

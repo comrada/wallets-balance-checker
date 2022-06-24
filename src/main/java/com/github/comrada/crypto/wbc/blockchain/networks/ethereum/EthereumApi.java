@@ -44,9 +44,4 @@ public class EthereumApi implements BlockchainApi {
         .sendAsync()
         .get(timeout, TimeUnit.SECONDS);
   }
-
-  @Override
-  public String asset() {
-    return "ETH";
-  }
 }

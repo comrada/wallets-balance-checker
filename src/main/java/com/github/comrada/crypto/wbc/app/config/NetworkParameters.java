@@ -55,15 +55,13 @@ public class NetworkParameters {
   public static final class Blockchain implements NetworkConfig {
 
     private String name;
-    private String asset;
     private Map<String, String> parameters = new HashMap<>();
 
     public Blockchain() {
     }
 
-    public Blockchain(String name, String asset, Map<String, String> parameters) {
+    public Blockchain(String name, Map<String, String> parameters) {
       this.name = requireNonNull(name);
-      this.asset = requireNonNull(asset);
       this.parameters = requireNonNull(parameters);
     }
 
@@ -74,15 +72,6 @@ public class NetworkParameters {
 
     public void setName(String name) {
       this.name = requireNonNull(name);
-    }
-
-    @Override
-    public String getAsset() {
-      return asset;
-    }
-
-    public void setAsset(String asset) {
-      this.asset = requireNonNull(asset);
     }
 
     @Override

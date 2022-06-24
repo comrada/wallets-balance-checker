@@ -6,8 +6,6 @@ public interface NetworkConfig {
 
   String getName();
 
-  String getAsset();
-
   Map<String, String> getParameters();
 
   default int getIntegerParam(String paramName) {

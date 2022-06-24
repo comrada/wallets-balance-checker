@@ -31,7 +31,7 @@ public class NetworksConfig {
     Set<String> enabledNetworks = parameters.getEnabledNetworks();
     Map<String, BlockchainApi> mappedApis = apis.stream()
         .filter(api -> enabledNetworks.contains(api.name()))
-        .collect(toMap(BlockchainApi::asset, identity()));
+        .collect(toMap(BlockchainApi::name, identity()));
     LOGGER.info("Balance checkers for assets {} have been registered", mappedApis.keySet());
     return new NetworksManager(mappedApis);
   }

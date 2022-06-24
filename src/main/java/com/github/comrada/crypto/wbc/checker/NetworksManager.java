@@ -18,11 +18,11 @@ public class NetworksManager {
   }
 
   public BigDecimal balance(Wallet wallet) {
-    BlockchainApi blockchainApi = networks.get(wallet.getAsset());
+    BlockchainApi blockchainApi = networks.get(wallet.getBlockchain());
     return blockchainApi.balance(wallet.getAddress());
   }
 
-  public Set<String> assets() {
+  public Set<String> blockchains() {
     return unmodifiableSet(networks.keySet());
   }
 }

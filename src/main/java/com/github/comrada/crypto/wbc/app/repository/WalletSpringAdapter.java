@@ -19,8 +19,8 @@ public class WalletSpringAdapter implements WalletStorage {
 
   @Override
   @Transactional(isolation = Isolation.SERIALIZABLE)
-  public Optional<Wallet> selectForUpdate(Set<String> assets) {
-    Optional<Wallet> foundWallet = walletRepository.selectForUpdate(assets);
+  public Optional<Wallet> selectForUpdate(Set<String> blockchains) {
+    Optional<Wallet> foundWallet = walletRepository.selectForUpdate(blockchains);
     if (foundWallet.isPresent()) {
       Wallet wallet = foundWallet.get();
       wallet.setLocked(true);

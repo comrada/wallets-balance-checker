@@ -7,6 +7,4 @@ public interface BlockchainApi {
   String name();
 
   BigDecimal balance(String address);
-
-  String asset();
 }

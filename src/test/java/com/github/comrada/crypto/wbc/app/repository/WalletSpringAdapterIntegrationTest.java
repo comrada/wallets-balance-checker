@@ -28,18 +28,18 @@ class WalletSpringAdapterIntegrationTest {
   @Test
   @Sql("wallets.sql")
   void whenSelectForUpdateCalled_thenWalletIsLocked() {
-    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("XRP"));
+    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertTrue(xrpWallet.isLocked());
-    assertEquals("XRP", xrpWallet.getAsset());
+    assertEquals("Ripple", xrpWallet.getBlockchain());
     assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getAddress());
   }
 
   @Test
   @Sql("wallets.sql")
   void update() {
-    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("XRP"));
+    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertNull(xrpWallet.getBalance());
