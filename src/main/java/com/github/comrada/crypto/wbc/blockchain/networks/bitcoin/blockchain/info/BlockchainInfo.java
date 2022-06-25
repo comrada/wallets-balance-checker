@@ -1,15 +1,15 @@
-package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info;
+package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BaseHttpClient;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 
-public class BlockstreamInfo extends BaseHttpClient implements BlockchainApi {
+public class BlockchainInfo extends BaseHttpClient implements BlockchainApi {
 
-  private static final String ADDRESS_URL = "https://blockstream.info/api/address/";
+  private static final String ADDRESS_URL = "https://blockchain.info/balance?active=";
 
-  public BlockstreamInfo(HttpClient client) {
+  public BlockchainInfo(HttpClient client) {
     super(client);
   }
 
@@ -21,6 +21,6 @@ public class BlockstreamInfo extends BaseHttpClient implements BlockchainApi {
   @Override
   public BigDecimal balance(String address) {
     Response response = get(ADDRESS_URL + address, Response.class);
-    return response.getFinalBalance();
+    return response.getFinalBalance(address);
   }
 }
