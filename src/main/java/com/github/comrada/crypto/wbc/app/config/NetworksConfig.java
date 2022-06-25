@@ -5,10 +5,16 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
+import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BitcoinWeb;
+import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info.BlockchainInfo;
+import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info.BlockstreamInfo;
 import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.ripple.RippleNet;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import com.github.comrada.crypto.wbc.checker.NetworksManager;
+import java.net.http.HttpClient;
+import java.net.http.HttpClient.Redirect;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -46,5 +52,16 @@ public class NetworksConfig {
   BlockchainApi rippleBalance(NetworkParameters parameters) {
     NetworkConfig rippleNetConfig = parameters.getConfigFor("Ripple");
     return new RippleNet(rippleNetConfig);
+  }
+
+  @Bean
+  BlockchainApi bitcoinWebServicesBalancer() {
+    HttpClient client = HttpClient.newBuilder()
+        .followRedirects(Redirect.NORMAL)
+        .connectTimeout(Duration.ofSeconds(20))
+        .build();
+    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client);
+    BlockchainInfo blockchainInfo = new BlockchainInfo(client);
+    return new BitcoinWeb(List.of(blockstreamInfo, blockchainInfo));
   }
 }

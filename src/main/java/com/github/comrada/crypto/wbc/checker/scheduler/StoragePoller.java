@@ -49,7 +49,7 @@ public class StoragePoller implements AutoCloseable {
   private void poll() {
     Optional<Wallet> foundWallet = walletStorage.selectForUpdate(blockchainsToPoll);
     if (foundWallet.isPresent()) {
-      LOGGER.info("Start checking: {}", foundWallet.get());
+      LOGGER.info("Start checking: [{}]", foundWallet.get());
       handleWithDelay(foundWallet.get(), Duration.ZERO);
     } else {
       LOGGER.debug("No wallets to update, sleeping...");
