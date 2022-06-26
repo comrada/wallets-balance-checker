@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import com.github.comrada.crypto.wbc.checker.entity.Wallet;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class BalanceUpdater implements Consumer<Wallet> {
   @Override
   public void accept(Wallet wallet) {
     BigDecimal balance = networksManager.balance(wallet);
-    if (wallet.getBalance() == null || !wallet.getBalance().equals(balance)) {
+    if (isNew(wallet) || hasBalanceChanged(wallet, balance)) {
       wallet.setBalance(balance);
       wallet.setCheckedAt(Instant.now());
       wallet.setLocked(false);
@@ -32,5 +33,15 @@ public class BalanceUpdater implements Consumer<Wallet> {
     } else {
       LOGGER.info("Wallet balance has not changed");
     }
+  }
+
+  private boolean hasBalanceChanged(Wallet wallet, BigDecimal newBalance) {
+    BigDecimal oldBalance = wallet.getBalance();
+    BigDecimal alignedNewBalance = newBalance.setScale(2, RoundingMode.HALF_UP);
+    return !oldBalance.equals(alignedNewBalance);
+  }
+
+  private boolean isNew(Wallet wallet) {
+    return wallet.getBalance() == null;
   }
 }

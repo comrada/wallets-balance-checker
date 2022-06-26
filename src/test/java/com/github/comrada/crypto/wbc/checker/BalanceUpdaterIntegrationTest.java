@@ -47,8 +47,8 @@ class BalanceUpdaterIntegrationTest {
   @Test
   void whenBalanceHasNotChanged_thenDoNothing() {
     Wallet wallet = mockLockedWallet();
-    wallet.setBalance(BigDecimal.valueOf(123));
-    when(networksManager.balance(wallet)).thenReturn(BigDecimal.valueOf(123));
+    wallet.setBalance(BigDecimal.valueOf(252597.24));
+    when(networksManager.balance(wallet)).thenReturn(BigDecimal.valueOf(252597.23637465));
     BalanceUpdater balanceUpdater = new BalanceUpdater(networksManager, walletStorage);
     balanceUpdater.accept(wallet);
 
