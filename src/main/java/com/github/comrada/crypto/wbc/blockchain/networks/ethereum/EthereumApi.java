@@ -11,7 +11,7 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 
-public class EthereumApi implements BlockchainApi {
+public class EthereumApi implements BlockchainApi, AutoCloseable {
 
   private final Web3j client;
   private final int timeout;
@@ -43,5 +43,10 @@ public class EthereumApi implements BlockchainApi {
         .ethGetBalance(address, DefaultBlockParameterName.LATEST)
         .sendAsync()
         .get(timeout, TimeUnit.SECONDS);
+  }
+
+  @Override
+  public void close() {
+    client.shutdown();
   }
 }

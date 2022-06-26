@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class NetworksManagerIntegrationTest {
+class NetworksManagerTest {
 
   private NetworksManager networksManager;
   private Wallet xrpWallet;
