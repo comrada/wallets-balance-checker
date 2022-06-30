@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.github.comrada.crypto.wbc.checker.entity.Wallet;
@@ -45,7 +44,7 @@ class BalanceUpdaterTest {
   }
 
   @Test
-  void whenBalanceHasNotChanged_thenDoNothing() {
+  void whenBalanceHasNotChanged_thenUnlockOnly() {
     Wallet wallet = mockLockedWallet();
     wallet.setBalance(BigDecimal.valueOf(252597.24));
     when(networksManager.balance(wallet)).thenReturn(BigDecimal.valueOf(252597.23637465));
@@ -53,7 +52,8 @@ class BalanceUpdaterTest {
     balanceUpdater.accept(wallet);
 
     verify(networksManager, times(1)).balance(wallet);
-    verifyNoInteractions(walletStorage);
+    assertNotNull(wallet.getCheckedAt());
+    assertFalse(wallet.isLocked());
   }
 
   private Wallet mockLockedWallet() {

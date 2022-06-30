@@ -26,13 +26,13 @@ public class BalanceUpdater implements Consumer<Wallet> {
     BigDecimal balance = networksManager.balance(wallet);
     if (isNew(wallet) || hasBalanceChanged(wallet, balance)) {
       wallet.setBalance(balance);
-      wallet.setCheckedAt(Instant.now());
-      wallet.setLocked(false);
-      Wallet updated = walletStorage.update(wallet);
-      LOGGER.info("Updated: {}", updated);
+      LOGGER.info("Updated: {}", wallet);
     } else {
       LOGGER.info("Wallet balance has not changed");
     }
+    wallet.setCheckedAt(Instant.now());
+    wallet.setLocked(false);
+    walletStorage.update(wallet);
   }
 
   private boolean hasBalanceChanged(Wallet wallet, BigDecimal newBalance) {
