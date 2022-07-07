@@ -5,10 +5,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
+import com.github.comrada.crypto.wbc.app.entity.WalletId;
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
-import com.github.comrada.crypto.wbc.checker.entity.Wallet;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +29,8 @@ class WalletSpringAdapterIntegrationTest {
 
   @Autowired
   private WalletRepository testRepository;
+  @PersistenceContext
+  private EntityManager entityManager;
 
   @Test
   @Sql("wallets.sql")
@@ -31,9 +38,8 @@ class WalletSpringAdapterIntegrationTest {
     Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
-    assertTrue(xrpWallet.isLocked());
-    assertEquals("Ripple", xrpWallet.getBlockchain());
-    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.getAddress());
+    assertEquals("Ripple", xrpWallet.blockchain());
+    assertEquals("rHWcuuZoFvDS6gNbmHSdpb7u1hZzxvCoMt", xrpWallet.address());
   }
 
   @Test
@@ -42,13 +48,16 @@ class WalletSpringAdapterIntegrationTest {
     Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
-    assertNull(xrpWallet.getBalance());
+    assertNull(xrpWallet.balance());
 
-    xrpWallet.setBalance(BigDecimal.valueOf(123));
-    testStorage.update(xrpWallet);
+    Wallet walletForUpdate = new Wallet(xrpWallet.blockchain(), xrpWallet.address(), BigDecimal.valueOf(123),
+        xrpWallet.exchange());
+    testStorage.update(walletForUpdate);
 
-    Optional<Wallet> foundUpdated = testRepository.findById(xrpWallet.getId());
+    Optional<WalletEntity> foundUpdated = testRepository.findById(
+        new WalletId(xrpWallet.blockchain(), xrpWallet.address()));
     assertTrue(foundUpdated.isPresent());
-    assertEquals(BigDecimal.valueOf(123), foundUpdated.get().getBalance());
+    entityManager.refresh(foundUpdated.get());
+    assertEquals(BigDecimal.valueOf(123).setScale(2, RoundingMode.UP), foundUpdated.get().getBalance());
   }
 }

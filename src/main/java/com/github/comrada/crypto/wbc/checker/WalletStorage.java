@@ -1,6 +1,6 @@
 package com.github.comrada.crypto.wbc.checker;
 
-import com.github.comrada.crypto.wbc.checker.entity.Wallet;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -14,5 +14,7 @@ public interface WalletStorage {
    */
   Optional<Wallet> selectForUpdate(Set<String> blockchains);
 
-  Wallet update(Wallet wallet);
+  void update(Wallet wallet);
+
+  void unlock(Wallet wallet);
 }

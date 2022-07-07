@@ -6,7 +6,7 @@ import static java.util.concurrent.CompletableFuture.runAsync;
 import static java.util.concurrent.Executors.newSingleThreadExecutor;
 
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
-import com.github.comrada.crypto.wbc.checker.entity.Wallet;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.time.Duration;
 import java.util.Optional;
@@ -77,9 +77,8 @@ public class StoragePoller implements AutoCloseable {
       return delayGenerator.next();
     } catch (Throwable t) {
       LOGGER.error(t.getMessage(), t);
-      if (wallet != null && wallet.isLocked()) {
-        wallet.setLocked(false);
-        walletStorage.update(wallet);
+      if (wallet != null) {
+        walletStorage.unlock(wallet);
       }
       recoverPolling();
       throw t;

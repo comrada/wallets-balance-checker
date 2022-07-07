@@ -3,7 +3,7 @@ package com.github.comrada.crypto.wbc.checker;
 import static java.util.Collections.unmodifiableSet;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
-import com.github.comrada.crypto.wbc.checker.entity.Wallet;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +18,8 @@ public class NetworksManager {
   }
 
   public BigDecimal balance(Wallet wallet) {
-    BlockchainApi blockchainApi = networks.get(wallet.getBlockchain());
-    return blockchainApi.balance(wallet.getAddress());
+    BlockchainApi blockchainApi = networks.get(wallet.blockchain());
+    return blockchainApi.balance(wallet.address());
   }
 
   public Set<String> blockchains() {

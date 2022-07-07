@@ -1,4 +1,4 @@
-package com.github.comrada.crypto.wbc.checker.entity;
+package com.github.comrada.crypto.wbc.app.entity;
 
 import static java.util.Objects.requireNonNull;
 

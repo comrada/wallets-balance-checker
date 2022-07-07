@@ -1,4 +1,4 @@
-package com.github.comrada.crypto.wbc.checker.entity;
+package com.github.comrada.crypto.wbc.app.entity;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -10,7 +10,7 @@ import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-@Entity
+@Entity(name = "Wallet")
 @Table(name = "wallets",
     indexes = {
         @Index(name = "IDX_CHECKED_AT", columnList = "checked_at"),
@@ -18,7 +18,7 @@ import javax.persistence.UniqueConstraint;
     },
     uniqueConstraints = @UniqueConstraint(columnNames = {"blockchain", "address"})
 )
-public class Wallet {
+public class WalletEntity {
 
   @EmbeddedId
   private WalletId id;
@@ -30,12 +30,12 @@ public class Wallet {
   private Instant checkedAt;
 
   @Column
-  private Boolean exchange;
+  private boolean exchange;
 
   @Column
-  private Boolean locked = false;
+  private boolean locked = false;
 
-  public Wallet() {
+  public WalletEntity() {
   }
 
   public WalletId getId() {
@@ -62,19 +62,19 @@ public class Wallet {
     this.checkedAt = checkedAt;
   }
 
-  public Boolean isExchange() {
+  public boolean isExchange() {
     return exchange;
   }
 
-  public void setExchange(Boolean exchange) {
+  public void setExchange(boolean exchange) {
     this.exchange = exchange;
   }
 
-  public Boolean isLocked() {
+  public boolean isLocked() {
     return locked;
   }
 
-  public void setLocked(Boolean locked) {
+  public void setLocked(boolean locked) {
     this.locked = locked;
   }
 
@@ -94,8 +94,8 @@ public class Wallet {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Wallet wallet = (Wallet) o;
-    return id.equals(wallet.id);
+    WalletEntity walletEntity = (WalletEntity) o;
+    return id.equals(walletEntity.id);
   }
 
   @Override
