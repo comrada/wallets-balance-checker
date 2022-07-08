@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 public class BlockchainInfo extends BaseHttpClient implements BlockchainApi {
 
   private static final String ADDRESS_URL = "https://blockchain.info/balance?active=";
+  public static final String BLOCKCHAIN_NAME = "Bitcoin";
 
   public BlockchainInfo(HttpClient client) {
     super(client);
@@ -15,7 +16,7 @@ public class BlockchainInfo extends BaseHttpClient implements BlockchainApi {
 
   @Override
   public String name() {
-    return "Bitcoin";
+    return BLOCKCHAIN_NAME;
   }
 
   @Override

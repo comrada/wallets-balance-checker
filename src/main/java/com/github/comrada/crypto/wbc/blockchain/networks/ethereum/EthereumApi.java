@@ -11,8 +11,9 @@ import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 
-public class EthereumApi implements BlockchainApi, AutoCloseable {
+public final class EthereumApi implements BlockchainApi, AutoCloseable {
 
+  public static final String BLOCKCHAIN_NAME = "Ethereum";
   private final Web3j client;
   private final int timeout;
 
@@ -24,7 +25,7 @@ public class EthereumApi implements BlockchainApi, AutoCloseable {
 
   @Override
   public String name() {
-    return "Ethereum";
+    return BLOCKCHAIN_NAME;
   }
 
   @Override

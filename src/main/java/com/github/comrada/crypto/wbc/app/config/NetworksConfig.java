@@ -11,6 +11,7 @@ import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info.BlockstreamInfo;
 import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.ripple.RippleNet;
+import com.github.comrada.crypto.wbc.blockchain.networks.stellar.StellarApi;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import com.github.comrada.crypto.wbc.checker.NetworksManager;
 import java.net.http.HttpClient;
@@ -45,13 +46,13 @@ public class NetworksConfig {
 
   @Bean
   BlockchainApi ethereumBalance(NetworkParameters parameters) {
-    NetworkConfig ethereumConfig = parameters.getConfigFor("Ethereum");
+    NetworkConfig ethereumConfig = parameters.getConfigFor(EthereumApi.BLOCKCHAIN_NAME);
     return new EthereumApi(ethereumConfig);
   }
 
   @Bean
   BlockchainApi rippleBalance(NetworkParameters parameters) {
-    NetworkConfig rippleNetConfig = parameters.getConfigFor("Ripple");
+    NetworkConfig rippleNetConfig = parameters.getConfigFor(RippleNet.BLOCKCHAIN_NAME);
     return new RippleNet(rippleNetConfig);
   }
 
@@ -69,5 +70,11 @@ public class NetworksConfig {
   @Bean
   BlockchainApi bitcoinWebServicesBalancer(RoundRobinBalancer roundRobinBalancer) {
     return new BitcoinWeb(roundRobinBalancer);
+  }
+
+  @Bean
+  BlockchainApi stellarBalance(NetworkParameters parameters) {
+    NetworkConfig stellarConfig = parameters.getConfigFor(StellarApi.BLOCKCHAIN_NAME);
+    return new StellarApi(stellarConfig);
   }
 }

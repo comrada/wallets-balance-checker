@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 
 public class BitcoinWeb implements BlockchainApi {
 
+  public static final String BLOCKCHAIN_NAME = "Bitcoin";
   private final RoundRobinBalancer balancer;
 
   public BitcoinWeb(RoundRobinBalancer balancer) {
@@ -16,7 +17,7 @@ public class BitcoinWeb implements BlockchainApi {
 
   @Override
   public String name() {
-    return "Bitcoin";
+    return BLOCKCHAIN_NAME;
   }
 
   @Override

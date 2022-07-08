@@ -13,7 +13,7 @@
 
   <groupId>com.github.comrada.crypto</groupId>
   <artifactId>wallets-balance-checker</artifactId>
-  <version>1.1</version>
+  <version>1.2</version>
   <name>Wallets Balance Checker</name>
   <description>Crypro wallets balance checker</description>
 
@@ -21,9 +21,10 @@
     <java.version>17</java.version>
     <spring-native.version>0.12.0</spring-native.version>
     <guava.version>31.1-jre</guava.version>
-    <web3j.version>4.9.2</web3j.version>
+    <web3j.version>5.0.0</web3j.version>
     <xrpl4j.version>2.3.0</xrpl4j.version>
     <okhttp3.version>4.10.0</okhttp3.version>
+    <stellar-sdk.version>0.34.1</stellar-sdk.version>
   </properties>
 
   <dependencies>
@@ -82,6 +83,11 @@
       <groupId>org.xrpl</groupId>
       <artifactId>xrpl4j-model</artifactId>
       <version>${xrpl4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.stellar</groupId>
+      <artifactId>java-stellar-sdk</artifactId>
+      <version>${stellar-sdk.version}</version>
     </dependency>
 
     <!--	Tests	-->
@@ -149,6 +155,10 @@
       <id>spring-release</id>
       <name>Spring release</name>
       <url>https://repo.spring.io/release</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
   <pluginRepositories>

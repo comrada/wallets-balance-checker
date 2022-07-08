@@ -5,10 +5,14 @@ app:
       - name: Ethereum
         parameters:
           node-url: ${APP_ETHEREUM_NODE_URL}
-          timeout-sec: 10
+          timeout-sec: ${APP_ETHEREUM_TIMEOUT:10}
       - name: Ripple
         parameters:
           rippled-url: ${APP_RIPPLED_URL}
+      - name: Stellar
+        parameters:
+          horizon-url: ${APP_STELLAR_URL}
+          asset: ${APP_STELLAR_ASSET:native}
 
 spring:
   main:

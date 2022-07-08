@@ -9,6 +9,7 @@ import java.net.http.HttpClient;
 public class BlockstreamInfo extends BaseHttpClient implements BlockchainApi {
 
   private static final String ADDRESS_URL = "https://blockstream.info/api/address/";
+  public static final String BLOCKCHAIN_NAME = "Bitcoin";
 
   public BlockstreamInfo(HttpClient client) {
     super(client);
@@ -16,7 +17,7 @@ public class BlockstreamInfo extends BaseHttpClient implements BlockchainApi {
 
   @Override
   public String name() {
-    return "Bitcoin";
+    return BLOCKCHAIN_NAME;
   }
 
   @Override

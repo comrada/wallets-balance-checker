@@ -11,8 +11,9 @@ import org.xrpl.xrpl4j.model.client.accounts.AccountInfoResult;
 import org.xrpl.xrpl4j.model.transactions.Address;
 import org.xrpl.xrpl4j.model.transactions.XrpCurrencyAmount;
 
-public class RippleNet implements BlockchainApi {
+public final class RippleNet implements BlockchainApi {
 
+  public static final String BLOCKCHAIN_NAME = "Ripple";
   private final XrplClient client;
 
   public RippleNet(NetworkConfig networkConfig) {
@@ -22,7 +23,7 @@ public class RippleNet implements BlockchainApi {
 
   @Override
   public String name() {
-    return "Ripple";
+    return BLOCKCHAIN_NAME;
   }
 
   @Override
