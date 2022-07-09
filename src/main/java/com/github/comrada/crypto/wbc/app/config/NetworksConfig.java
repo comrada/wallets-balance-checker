@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -45,19 +46,22 @@ public class NetworksConfig {
   }
 
   @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Ethereum')")
   BlockchainApi ethereumBalance(NetworkParameters parameters) {
     NetworkConfig ethereumConfig = parameters.getConfigFor(EthereumApi.BLOCKCHAIN_NAME);
     return new EthereumApi(ethereumConfig);
   }
 
   @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Ripple')")
   BlockchainApi rippleBalance(NetworkParameters parameters) {
     NetworkConfig rippleNetConfig = parameters.getConfigFor(RippleNet.BLOCKCHAIN_NAME);
     return new RippleNet(rippleNetConfig);
   }
 
   @Bean
-  RoundRobinBalancer roundRobinBalancer() {
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Bitcoin')")
+  RoundRobinBalancer bitcoinRoundRobinBalancer() {
     HttpClient client = HttpClient.newBuilder()
         .followRedirects(Redirect.NORMAL)
         .connectTimeout(Duration.ofSeconds(20))
@@ -68,11 +72,13 @@ public class NetworksConfig {
   }
 
   @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Bitcoin')")
   BlockchainApi bitcoinWebServicesBalancer(RoundRobinBalancer roundRobinBalancer) {
     return new BitcoinWeb(roundRobinBalancer);
   }
 
   @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Stellar')")
   BlockchainApi stellarBalance(NetworkParameters parameters) {
     NetworkConfig stellarConfig = parameters.getConfigFor(StellarApi.BLOCKCHAIN_NAME);
     return new StellarApi(stellarConfig);
