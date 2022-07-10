@@ -1,11 +1,14 @@
 package com.github.comrada.crypto.wbc.app.entity;
 
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -34,6 +37,10 @@ public class WalletEntity {
 
   @Column
   private boolean locked = false;
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false, length = 16)
+  private WalletStatus status = WalletStatus.OK;
 
   public WalletEntity() {
   }
@@ -84,6 +91,14 @@ public class WalletEntity {
 
   public String getAddress() {
     return id.getAddress();
+  }
+
+  public WalletStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(WalletStatus status) {
+    this.status = status;
   }
 
   @Override

@@ -17,4 +17,6 @@ public interface WalletStorage {
   void update(Wallet wallet);
 
   void unlock(Wallet wallet);
+
+  void invalidate(Wallet wallet);
 }

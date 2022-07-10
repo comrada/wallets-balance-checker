@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.github.comrada.crypto.wbc.domain.Wallet;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,7 +54,8 @@ class BalanceUpdaterTest {
         "Ripple",
         "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ",
         balance,
-        false
+        false,
+        WalletStatus.OK
     );
   }
 }

@@ -2,6 +2,7 @@ package com.github.comrada.crypto.wbc.app.repository;
 
 import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
 import com.github.comrada.crypto.wbc.app.entity.WalletId;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
@@ -26,23 +27,31 @@ public interface WalletRepository extends JpaRepository<WalletEntity, WalletId> 
 
   @Modifying(flushAutomatically = true)
   @Query(value = """
-      update wallets set locked = true
-      where blockchain = :#{#walletId.blockchain} and address = :#{#walletId.address} and locked = false
-      """, nativeQuery = true)
+      update Wallet set locked = true
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and locked = false
+      """)
   void lock(WalletId walletId);
 
   @Modifying(flushAutomatically = true)
   @Query(value = """
-      update wallets set locked = false, checked_at = :checkedAt
-      where blockchain = :#{#walletId.blockchain} and address = :#{#walletId.address} and locked = true
-      """, nativeQuery = true)
+      update Wallet set locked = false, checkedAt = :checkedAt
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and locked = true
+      """)
   void unlock(WalletId walletId, Instant checkedAt);
 
   @Modifying(flushAutomatically = true)
   @Query(value = """
-      update wallets set balance = :#{#walletEntity.balance}, checked_at = :#{#walletEntity.checkedAt},
+      update Wallet set balance = :#{#walletEntity.balance}, checkedAt = :#{#walletEntity.checkedAt},
       locked = :#{#walletEntity.locked}
-      where blockchain = :#{#walletEntity.id.blockchain} and address = :#{#walletEntity.id.address}
-      """, nativeQuery = true)
+      where id.blockchain = :#{#walletEntity.id.blockchain} and id.address = :#{#walletEntity.id.address}
+      """)
   void update(WalletEntity walletEntity);
+
+
+  @Modifying(flushAutomatically = true)
+  @Query(value = """
+      update Wallet set status = :status, locked = false, checkedAt = :checkedAt
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address}
+      """)
+  void changeStatus(WalletId walletId, WalletStatus status, Instant checkedAt);
 }

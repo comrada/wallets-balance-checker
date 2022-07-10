@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.domain.Wallet;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Set;
@@ -48,7 +49,8 @@ class NetworksManagerTest {
         blockchain,
         address,
         BigDecimal.ZERO,
-        false
+        false,
+        WalletStatus.OK
     );
   }
 }

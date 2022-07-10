@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
 import com.github.comrada.crypto.wbc.app.entity.WalletId;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
@@ -113,5 +114,20 @@ class WalletRepositoryIntegrationTest {
     assertFalse(wallet.isLocked());
     assertEquals(now, wallet.getCheckedAt());
     assertEquals(BigDecimal.valueOf(123).setScale(2, RoundingMode.UP), wallet.getBalance());
+  }
+
+  @Test
+  @Sql("wallets.sql")
+  void changeStatus() {
+    Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+    WalletId id = new WalletId("Bitcoin", "3NYQhzaUPEa9HfcSkHkv77SUUkPx2dx39o");
+    testRepository.changeStatus(id, WalletStatus.INVALID, now);
+    Optional<WalletEntity> foundWallet = testRepository.findById(id);
+    assertTrue(foundWallet.isPresent());
+    WalletEntity wallet = foundWallet.get();
+    assertEquals(id, wallet.getId());
+    assertFalse(wallet.isLocked());
+    assertEquals(now, wallet.getCheckedAt());
+    assertEquals(WalletStatus.INVALID, wallet.getStatus());
   }
 }

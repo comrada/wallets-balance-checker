@@ -6,8 +6,13 @@ public record Wallet(
     String blockchain,
     String address,
     BigDecimal balance,
-    boolean exchange
+    boolean exchange,
+    WalletStatus status
 ) {
+
+  public static Wallet newBalance(Wallet oldWallet, BigDecimal newBalance) {
+    return new Wallet(oldWallet.blockchain, oldWallet.address(), newBalance, oldWallet.exchange(), oldWallet.status);
+  }
 
   @Override
   public String toString() {

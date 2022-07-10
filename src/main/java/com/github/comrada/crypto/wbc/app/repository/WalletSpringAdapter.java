@@ -7,6 +7,7 @@ import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
 import com.github.comrada.crypto.wbc.app.mapper.WalletMapper;
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
 import com.github.comrada.crypto.wbc.domain.Wallet;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
@@ -48,5 +49,11 @@ public class WalletSpringAdapter implements WalletStorage {
   @Transactional
   public void unlock(Wallet wallet) {
     walletRepository.unlock(mapper.mapWalletId(wallet), Instant.now());
+  }
+
+  @Override
+  @Transactional
+  public void invalidate(Wallet wallet) {
+    walletRepository.changeStatus(mapper.mapWalletId(wallet), WalletStatus.INVALID, Instant.now());
   }
 }
