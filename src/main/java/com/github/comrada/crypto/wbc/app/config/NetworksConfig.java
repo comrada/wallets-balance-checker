@@ -7,7 +7,7 @@ import static java.util.stream.Collectors.toMap;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.RoundRobinBalancer;
 import com.github.comrada.crypto.wbc.blockchain.networks.binance.BinanceChain;
-import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BitcoinWeb;
+import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BitcoinRestApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info.BlockchainInfo;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info.BlockstreamInfo;
 import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
@@ -75,7 +75,7 @@ public class NetworksConfig {
   @Bean
   @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Bitcoin')")
   BlockchainApi bitcoinWebServicesBalancer(RoundRobinBalancer roundRobinBalancer) {
-    return new BitcoinWeb(roundRobinBalancer);
+    return new BitcoinRestApi(roundRobinBalancer);
   }
 
   @Bean

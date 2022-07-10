@@ -6,12 +6,12 @@ import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.RoundRobinBalancer;
 import java.math.BigDecimal;
 
-public class BitcoinWeb implements BlockchainApi {
+public class BitcoinRestApi implements BlockchainApi {
 
   public static final String BLOCKCHAIN_NAME = "Bitcoin";
   private final RoundRobinBalancer balancer;
 
-  public BitcoinWeb(RoundRobinBalancer balancer) {
+  public BitcoinRestApi(RoundRobinBalancer balancer) {
     this.balancer = requireNonNull(balancer);
   }
 

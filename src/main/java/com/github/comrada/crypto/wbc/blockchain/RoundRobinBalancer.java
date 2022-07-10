@@ -70,7 +70,7 @@ public final class RoundRobinBalancer implements AutoCloseable {
   }
 
   private void resetFailuresFor(BlockchainApi service) {
-    serviceFailures.get(service).compareAndSet(MAX_FAILURES, 0);
+    serviceFailures.get(service).set(0);
   }
 
   private int incrementFailuresFor(BlockchainApi service) {

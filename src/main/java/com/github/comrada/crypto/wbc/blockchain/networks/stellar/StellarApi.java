@@ -1,12 +1,14 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.stellar;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
+import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 import org.stellar.sdk.Server;
+import org.stellar.sdk.requests.ErrorResponse;
 import org.stellar.sdk.responses.AccountResponse;
 import org.stellar.sdk.responses.AccountResponse.Balance;
 
@@ -38,6 +40,11 @@ public final class StellarApi implements BlockchainApi, AutoCloseable {
           .map(BigDecimal::new)
           .orElseThrow(() -> new NetworkException("XLS balance not found, address: " + address));
     } catch (IOException e) {
+      throw new NetworkException(e);
+    } catch (ErrorResponse e) {
+      if (e.getCode() == 404) {
+        throw new InvalidWalletException("Wallet '" + address + "' not found");
+      }
       throw new NetworkException(e);
     }
   }
