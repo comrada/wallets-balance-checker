@@ -1,7 +1,7 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
-import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BaseHttpClient;
+import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 

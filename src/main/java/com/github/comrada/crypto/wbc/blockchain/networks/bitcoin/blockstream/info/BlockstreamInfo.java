@@ -2,7 +2,7 @@ package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.in
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
-import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BaseHttpClient;
+import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 

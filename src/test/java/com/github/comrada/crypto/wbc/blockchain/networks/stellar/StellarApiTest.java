@@ -21,7 +21,7 @@ class StellarApiTest {
     String accountResponse = readFile(StellarApiTest.class, "account-response.json");
     server.enqueue(new MockResponse().setBody(accountResponse));
     server.start();
-    networkConfig = new NetworkParameters.Blockchain("Ethereum", Map.of(
+    networkConfig = new NetworkParameters.Blockchain("Stellar", Map.of(
         "horizon-url", server.url("").toString(),
         "asset", "native"
     ));
@@ -32,7 +32,6 @@ class StellarApiTest {
     try (StellarApi stellarApi = new StellarApi(networkConfig)) {
       BigDecimal actualBalance = stellarApi.balance("GCWEER57MBVRXA4I426VL3PSWWM72SSZ3AZ5TGBDSWJMTDFVCABWNZIF");
       assertEquals(new BigDecimal("1253814448.0501659"), actualBalance);
-      System.out.println(actualBalance);
     }
   }
 

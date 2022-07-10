@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toMap;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.RoundRobinBalancer;
+import com.github.comrada.crypto.wbc.blockchain.networks.binance.BinanceChain;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.BitcoinWeb;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info.BlockchainInfo;
 import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info.BlockstreamInfo;
@@ -82,5 +83,16 @@ public class NetworksConfig {
   BlockchainApi stellarBalance(NetworkParameters parameters) {
     NetworkConfig stellarConfig = parameters.getConfigFor(StellarApi.BLOCKCHAIN_NAME);
     return new StellarApi(stellarConfig);
+  }
+
+  @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Binance Chain')")
+  BlockchainApi binanceChainBalance(NetworkParameters parameters) {
+    NetworkConfig binanceChainConfig = parameters.getConfigFor(BinanceChain.BLOCKCHAIN_NAME);
+    HttpClient client = HttpClient.newBuilder()
+        .followRedirects(Redirect.NORMAL)
+        .connectTimeout(Duration.ofSeconds(20))
+        .build();
+    return new BinanceChain(client, binanceChainConfig);
   }
 }

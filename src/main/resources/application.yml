@@ -13,6 +13,9 @@ app:
         parameters:
           horizon-url: ${APP_STELLAR_URL}
           asset: ${APP_STELLAR_ASSET:native}
+      - name: Binance Chain
+        parameters:
+          asset: ${APP_BINANCE_ASSET:BNB}
 
 spring:
   main:

@@ -1,4 +1,4 @@
-package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin;
+package com.github.comrada.crypto.wbc.blockchain.rest;
 
 import static java.util.Objects.requireNonNull;
 
