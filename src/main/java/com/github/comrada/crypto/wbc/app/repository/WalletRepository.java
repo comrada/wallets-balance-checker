@@ -20,7 +20,8 @@ public interface WalletRepository extends JpaRepository<WalletEntity, WalletId> 
         w.blockchain in :blockchains and
         (w.checked_at <= current_timestamp - interval '1' day or
         w.checked_at is null) and
-        w.locked = false
+        w.locked = false and
+        w.status = 'OK'
       limit 1
       """, nativeQuery = true)
   Optional<WalletEntity> selectForUpdate(Set<String> blockchains);

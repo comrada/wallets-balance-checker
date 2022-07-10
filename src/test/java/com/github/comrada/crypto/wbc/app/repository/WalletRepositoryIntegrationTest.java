@@ -36,6 +36,13 @@ class WalletRepositoryIntegrationTest {
   }
 
   @Test
+  @Sql("invalid-wallets.sql")
+  void whenThereAreInvalidWalletsOnly_thenNothingSelected() {
+    Optional<WalletEntity> foundXrpWallet = testRepository.selectForUpdate(singleton("Ripple"));
+    assertFalse(foundXrpWallet.isPresent());
+  }
+
+  @Test
   @Sql("wallets.sql")
   void selectEthForUpdate() {
     Optional<WalletEntity> foundEthWallet = testRepository.selectForUpdate(singleton("Ethereum"));
