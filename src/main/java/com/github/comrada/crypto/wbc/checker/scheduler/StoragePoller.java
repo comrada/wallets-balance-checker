@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,14 +26,16 @@ public class StoragePoller implements AutoCloseable {
 
   private final ExecutorService executor;
   private final WalletStorage walletStorage;
-  private final DelayGenerator delayGenerator;
-  private final Set<String> blockchainsToPoll;
+  private final DelayGenerator retryDelayGenerator;
+  private final DelayGenerator pollDelayGenerator;
+  private final Supplier<Set<String>> blockchainsToPoll;
   private final Consumer<Wallet> walletHandler;
 
-  public StoragePoller(WalletStorage walletStorage, DelayGenerator delayGenerator, Set<String> blockchainsToPoll,
-      Consumer<Wallet> walletHandler) {
+  public StoragePoller(WalletStorage walletStorage, DelayGenerator retryDelayGenerator,
+      DelayGenerator pollDelayGenerator, Supplier<Set<String>> blockchainsToPoll, Consumer<Wallet> walletHandler) {
     this.walletStorage = requireNonNull(walletStorage);
-    this.delayGenerator = requireNonNull(delayGenerator);
+    this.retryDelayGenerator = requireNonNull(retryDelayGenerator);
+    this.pollDelayGenerator = requireNonNull(pollDelayGenerator);
     this.blockchainsToPoll = requireNonNull(blockchainsToPoll);
     this.walletHandler = requireNonNull(walletHandler);
     this.executor = createExecutor();
@@ -47,13 +50,13 @@ public class StoragePoller implements AutoCloseable {
   }
 
   private void poll() {
-    Optional<Wallet> foundWallet = walletStorage.selectForUpdate(blockchainsToPoll);
+    Optional<Wallet> foundWallet = walletStorage.selectForUpdate(blockchainsToPoll.get());
     if (foundWallet.isPresent()) {
       LOGGER.info("Start checking: [{}]", foundWallet.get());
-      handleWithDelay(foundWallet.get(), Duration.ZERO);
+      handleWithDelay(foundWallet.get(), pollDelayGenerator.next());
     } else {
       LOGGER.debug("No wallets to update, sleeping...");
-      delayGenerator.reset();
+      retryDelayGenerator.reset();
       runTask(this::poll, nextDelayFor(null));
     }
   }
@@ -61,11 +64,11 @@ public class StoragePoller implements AutoCloseable {
   private void handleWithDelay(Wallet wallet, Duration delay) {
     runTask(() -> walletHandler.accept(wallet), delay)
         .thenRun(() -> {
-          delayGenerator.reset();
+          retryDelayGenerator.reset();
           poll();
         })
         .exceptionally(throwable -> {
-          LOGGER.error("Execution failed. Attempt will be repeated in %s".formatted(delayGenerator.peekNext()),
+          LOGGER.error("Execution failed. Attempt will be repeated in %s".formatted(retryDelayGenerator.peekNext()),
               throwable);
           handleWithDelay(wallet, nextDelayFor(wallet));
           return null;
@@ -74,7 +77,7 @@ public class StoragePoller implements AutoCloseable {
 
   private Duration nextDelayFor(Wallet wallet) {
     try {
-      return delayGenerator.next();
+      return retryDelayGenerator.next();
     } catch (Throwable t) {
       LOGGER.error(t.getMessage(), t);
       if (wallet != null) {
@@ -87,7 +90,7 @@ public class StoragePoller implements AutoCloseable {
 
   private void recoverPolling() {
     LOGGER.info("An attempt to restore consumption will be made in 1 hour.");
-    delayGenerator.reset();
+    retryDelayGenerator.reset();
     runTask(this::poll, Duration.ofHours(1));
   }
 

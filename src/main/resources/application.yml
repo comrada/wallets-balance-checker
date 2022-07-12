@@ -16,6 +16,18 @@ app:
       - name: Binance Chain
         parameters:
           asset: ${APP_BINANCE_ASSET:BNB}
+  storage-poller:
+    delay-generators:
+      retry-delay:
+        type: LIMITED_FIXED
+        limited-fixed-generator:
+          delay: 60s
+          retry-limit: 3
+      poll-delay:
+        type: RANDOM
+        random-generator:
+          min-delay: 1s
+          max-delay: 3s
 
 spring:
   main:
