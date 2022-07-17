@@ -4,6 +4,8 @@ package com.github.comrada.crypto.wbc.app.config;
 import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.comrada.crypto.wbc.app.mapper.JacksonResponseMapper;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.RoundRobinBalancer;
 import com.github.comrada.crypto.wbc.blockchain.networks.binance.BinanceChain;
@@ -13,6 +15,8 @@ import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.inf
 import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.ripple.RippleNet;
 import com.github.comrada.crypto.wbc.blockchain.networks.stellar.StellarApi;
+import com.github.comrada.crypto.wbc.blockchain.networks.tron.TronGrid;
+import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import com.github.comrada.crypto.wbc.checker.NetworksManager;
 import java.net.http.HttpClient;
@@ -35,6 +39,12 @@ import org.springframework.context.annotation.Profile;
 public class NetworksConfig {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(NetworksConfig.class);
+
+  @Bean
+  ResponseMapper responseMapper() {
+    ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
+    return new JacksonResponseMapper(objectMapper);
+  }
 
   @Bean
   NetworksManager networksManager(List<BlockchainApi> apis, NetworkParameters parameters) {
@@ -62,13 +72,13 @@ public class NetworksConfig {
 
   @Bean
   @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Bitcoin')")
-  RoundRobinBalancer bitcoinRoundRobinBalancer() {
+  RoundRobinBalancer bitcoinRoundRobinBalancer(ResponseMapper responseMapper) {
     HttpClient client = HttpClient.newBuilder()
         .followRedirects(Redirect.NORMAL)
         .connectTimeout(Duration.ofSeconds(20))
         .build();
-    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client);
-    BlockchainInfo blockchainInfo = new BlockchainInfo(client);
+    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client, responseMapper);
+    BlockchainInfo blockchainInfo = new BlockchainInfo(client, responseMapper);
     return new RoundRobinBalancer(List.of(blockchainInfo, blockstreamInfo), Duration.ofMinutes(10));
   }
 
@@ -87,12 +97,23 @@ public class NetworksConfig {
 
   @Bean
   @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Binance Chain')")
-  BlockchainApi binanceChainBalance(NetworkParameters parameters) {
+  BlockchainApi binanceChainBalance(NetworkParameters parameters, ResponseMapper responseMapper) {
     NetworkConfig binanceChainConfig = parameters.getConfigFor(BinanceChain.BLOCKCHAIN_NAME);
     HttpClient client = HttpClient.newBuilder()
         .followRedirects(Redirect.NORMAL)
         .connectTimeout(Duration.ofSeconds(20))
         .build();
-    return new BinanceChain(client, binanceChainConfig);
+    return new BinanceChain(client, responseMapper, binanceChainConfig);
+  }
+
+  @Bean
+  @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Tron')")
+  BlockchainApi tronBalance(NetworkParameters parameters, ResponseMapper responseMapper) {
+    NetworkConfig tronConfig = parameters.getConfigFor(TronGrid.BLOCKCHAIN_NAME);
+    HttpClient client = HttpClient.newBuilder()
+        .followRedirects(Redirect.NORMAL)
+        .connectTimeout(Duration.ofSeconds(20))
+        .build();
+    return new TronGrid(client, responseMapper, tronConfig);
   }
 }

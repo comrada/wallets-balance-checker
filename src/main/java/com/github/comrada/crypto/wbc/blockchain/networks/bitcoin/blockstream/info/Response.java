@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Response(
+record Response(
     @JsonProperty
     String address,
     @JsonProperty("chain_stats")
@@ -19,7 +19,7 @@ public record Response(
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  public record ChainStats(
+  record ChainStats(
       @JsonProperty("funded_txo_sum")
       BigDecimal fundedTxoSum,
       @JsonProperty("spent_txo_sum")

@@ -1,0 +1,61 @@
+{
+  "data": [
+    {
+      "owner_permission": {
+        "keys": [
+          {
+            "address": "TKHuVq1oKVruCGLvqVexFs6dawKv6fQgFs",
+            "weight": 1
+          }
+        ],
+        "threshold": 1,
+        "permission_name": "owner"
+      },
+      "account_resource": {
+      },
+      "active_permission": [
+        {
+          "operations": "7fff1fc0033e0300000000000000000000000000000000000000000000000000",
+          "keys": [
+            {
+              "address": "TKHuVq1oKVruCGLvqVexFs6dawKv6fQgFs",
+              "weight": 1
+            }
+          ],
+          "threshold": 1,
+          "id": 2,
+          "type": "Active",
+          "permission_name": "active"
+        }
+      ],
+      "address": "4166426c7ac3d98b29191063833345b6bc540d7278",
+      "create_time": 1588013004000,
+      "latest_consume_time": 1657443279000,
+      "frozen": [
+        {
+          "frozen_balance": 9500000000,
+          "expire_time": 1619379054000
+        }
+      ],
+      "latest_opration_time": 1657443279000,
+      "free_asset_net_usageV2": [
+        {
+          "value": 0,
+          "key": "1003657"
+        }
+      ],
+      "balance": 100135731990,
+      "trc20": [
+        {
+          "TNGwX8XBALkEhFZe43Ghi8Fw29mDGzNAb1": "1000000"
+        }
+      ],
+      "latest_consume_free_time": 1619119836000
+    }
+  ],
+  "success": true,
+  "meta": {
+    "at": 1658005073210,
+    "page_size": 1
+  }
+}

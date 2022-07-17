@@ -1,0 +1,58 @@
+{
+  "data": [
+    {
+      "owner_permission": {
+        "keys": [
+          {
+            "address": "TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi",
+            "weight": 1
+          }
+        ],
+        "threshold": 1,
+        "permission_name": "owner"
+      },
+      "account_resource": {
+        "acquired_delegated_frozen_balance_for_energy": 4000000,
+        "energy_usage": 119,
+        "latest_consume_time_for_energy": 1658083737000
+      },
+      "active_permission": [
+        {
+          "operations": "7fff1fc0033e0300000000000000000000000000000000000000000000000000",
+          "keys": [
+            {
+              "address": "TV6MuMXfmLbBqPZvBHdwFsDnQeVfnmiuSi",
+              "weight": 1
+            }
+          ],
+          "threshold": 1,
+          "id": 2,
+          "type": "Active",
+          "permission_name": "active"
+        }
+      ],
+      "address": "41d1c4bb7b2f39aba5707711719b2236b5b605af2e",
+      "create_time": 1629452451000,
+      "latest_opration_time": 1658083737000,
+      "free_asset_net_usageV2": [
+        {
+          "value": 0,
+          "key": "1004108"
+        }
+      ],
+      "balance": 2052504986906760,
+      "trc20": [
+        {
+          "TVoLHooTu9uthsczLDpkBhz5ES8ueoqX11": "99999000000"
+        }
+      ],
+      "latest_consume_free_time": 1658069400000,
+      "acquired_delegated_frozen_balance_for_bandwidth": 10000000
+    }
+  ],
+  "success": true,
+  "meta": {
+    "at": 1658083745856,
+    "page_size": 1
+  }
+}

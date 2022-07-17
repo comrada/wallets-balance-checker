@@ -1,4 +1,4 @@
-package com.github.comrada.crypto.wbc.blockchain.networks.binance;
+package com.github.comrada.crypto.wbc.blockchain.networks.tron;
 
 import static com.github.comrada.crypto.wbc.TestUtils.readFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,37 +20,37 @@ import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class BinanceChainIntegrationTest {
+class TronGridTest {
 
   private HttpClient client;
-  private BinanceChain testNetwork;
+  private TronGrid testNetwork;
 
   @BeforeEach
   void initConfig() {
-    NetworkConfig networkConfig = new NetworkParameters.Blockchain("Binance Chain", Map.of(
-        "asset", "BNB"
+    NetworkConfig networkConfig = new NetworkParameters.Blockchain("Tron", Map.of(
+        "api-key", "fake-token"
     ));
     client = mock(HttpClient.class);
     ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
-    testNetwork = new BinanceChain(client, responseMapper, networkConfig);
+    testNetwork = new TronGrid(client, responseMapper, networkConfig);
   }
 
   @Test
   void name() {
-    assertEquals("Binance Chain", testNetwork.name());
+    assertEquals("Tron", testNetwork.name());
   }
 
   @Test
   void balance() throws Exception {
     HttpRequest request = HttpRequest.newBuilder()
-        .uri(URI.create("https://dex.binance.org/api/v1/account/bnb1fnd0k5l4p3ck2j9x9dp36chk059w977pszdgdz"))
+        .header("TRON-PRO-API-KEY", "fake-token")
+        .uri(URI.create("https://api.trongrid.io/v1/accounts/TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz?only_confirmed=true"))
         .build();
     HttpResponse<String> response = mock(HttpResponse.class);
-    String accountResponse = readFile(BinanceChainIntegrationTest.class, "account-response.json");
+    String accountResponse = readFile(TronGridTest.class, "account-response-with-frozen-balance-and-gas.json");
     when(response.body()).thenReturn(accountResponse);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
-
-    BigDecimal balance = testNetwork.balance("bnb1fnd0k5l4p3ck2j9x9dp36chk059w977pszdgdz");
-    assertEquals(new BigDecimal("116495.80984738"), balance);
+    BigDecimal balance = testNetwork.balance("TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz");
+    assertEquals(new BigDecimal("160488.731990"), balance);
   }
 }

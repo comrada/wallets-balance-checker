@@ -16,6 +16,9 @@ app:
       - name: Binance Chain
         parameters:
           asset: ${APP_BINANCE_ASSET:BNB}
+      - name: Tron
+        parameters:
+          api-key: ${APP_TRON_API_KEY}
   storage-poller:
     delay-generators:
       retry-delay:

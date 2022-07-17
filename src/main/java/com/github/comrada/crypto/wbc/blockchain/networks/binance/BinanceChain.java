@@ -3,6 +3,7 @@ package com.github.comrada.crypto.wbc.blockchain.networks.binance;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
+import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
@@ -14,8 +15,8 @@ public final class BinanceChain extends BaseHttpClient implements BlockchainApi 
   private static final String ACCOUNT_URL = "https://dex.binance.org/api/v1/account/";
   private final String asset;
 
-  public BinanceChain(HttpClient client, NetworkConfig networkConfig) {
-    super(client);
+  public BinanceChain(HttpClient client, ResponseMapper responseMapper, NetworkConfig networkConfig) {
+    super(client, responseMapper);
     asset = networkConfig.getStringParam("asset");
   }
 

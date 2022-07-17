@@ -2,6 +2,7 @@ package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.inf
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
+import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 
@@ -10,8 +11,8 @@ public class BlockchainInfo extends BaseHttpClient implements BlockchainApi {
   private static final String ADDRESS_URL = "https://blockchain.info/balance?active=";
   public static final String BLOCKCHAIN_NAME = "Bitcoin";
 
-  public BlockchainInfo(HttpClient client) {
-    super(client);
+  public BlockchainInfo(HttpClient client, ResponseMapper responseMapper) {
+    super(client, responseMapper);
   }
 
   @Override

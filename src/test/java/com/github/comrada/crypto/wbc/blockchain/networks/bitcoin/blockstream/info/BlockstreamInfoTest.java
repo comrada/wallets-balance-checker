@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.comrada.crypto.wbc.app.mapper.JacksonResponseMapper;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
+import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -44,7 +47,8 @@ class BlockstreamInfoTest {
     HttpClient client = mock(HttpClient.class);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
 
-    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client);
+    ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
+    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client, responseMapper);
     BigDecimal actualBalance = blockstreamInfo.balance("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3");
     assertEquals(BigDecimal.valueOf(1731.23431080).setScale(8, RoundingMode.HALF_UP), actualBalance);
   }
@@ -75,7 +79,8 @@ class BlockstreamInfoTest {
     HttpClient client = mock(HttpClient.class);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
 
-    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client);
+    ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
+    BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client, responseMapper);
     assertThrows(NetworkException.class, () -> blockstreamInfo.balance("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3"));
   }
 

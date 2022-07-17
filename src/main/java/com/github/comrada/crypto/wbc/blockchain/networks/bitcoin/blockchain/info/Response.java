@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Response {
+final class Response {
 
   private final Map<String, Balance> balances = new HashMap<>(1);
 
@@ -23,7 +23,7 @@ public final class Response {
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
-  public record Balance(
+  record Balance(
       @JsonProperty("final_balance")
       BigDecimal finalBalance) {
 

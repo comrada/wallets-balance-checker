@@ -3,7 +3,7 @@ package com.github.comrada.crypto.wbc.blockchain.networks.binance;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Balance {
+class Balance {
 
   private String symbol;
   private String free;
