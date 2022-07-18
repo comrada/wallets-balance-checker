@@ -27,6 +27,6 @@ public final class TronGrid extends BaseHttpClient implements BlockchainApi {
   @Override
   public BigDecimal balance(String address) {
     Account account = get(ACCOUNT_URL.formatted(address), Account.class);
-    return balanceExtractor.extract(account);
+    return balanceExtractor.extract(account).movePointLeft(6);
   }
 }

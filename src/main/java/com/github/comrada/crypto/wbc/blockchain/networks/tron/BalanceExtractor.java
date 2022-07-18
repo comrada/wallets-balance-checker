@@ -1,5 +1,7 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.tron;
 
+import static java.util.Objects.requireNonNullElse;
+
 import com.github.comrada.crypto.wbc.blockchain.networks.tron.Account.AccountData;
 import com.github.comrada.crypto.wbc.blockchain.networks.tron.Account.Frozen;
 import java.math.BigDecimal;
@@ -13,8 +15,7 @@ public final class BalanceExtractor {
     }
     return account.data().stream()
         .map(this::getBalanceFromAccountData)
-        .reduce(BigDecimal.ZERO, BigDecimal::add)
-        .movePointLeft(6);
+        .reduce(BigDecimal.ZERO, BigDecimal::add);
   }
 
   private BigDecimal getBalanceFromAccountData(AccountData accountData) {
@@ -25,7 +26,7 @@ public final class BalanceExtractor {
   }
 
   private BigDecimal getBalance(AccountData accountData) {
-    return accountData.balance();
+    return requireNonNullElse(accountData.balance(), BigDecimal.ZERO);
   }
 
   private Optional<BigDecimal> getFrozenBalance(AccountData accountData) {

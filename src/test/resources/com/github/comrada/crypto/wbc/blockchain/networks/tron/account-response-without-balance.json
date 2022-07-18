@@ -1,0 +1,113 @@
+{
+  "data": [
+    {
+      "latest_opration_time": 1646713599000,
+      "owner_permission": {
+        "keys": [
+          {
+            "address": "TBYQhtCEcmEeC84gzqxPUaudVmq7qug8Et",
+            "weight": 1
+          }
+        ],
+        "threshold": 1,
+        "permission_name": "owner"
+      },
+      "free_asset_net_usageV2": [
+        {
+          "value": 0,
+          "key": "1004667"
+        },
+        {
+          "value": 0,
+          "key": "1004536"
+        },
+        {
+          "value": 0,
+          "key": "1001611"
+        },
+        {
+          "value": 0,
+          "key": "1004698"
+        },
+        {
+          "value": 0,
+          "key": "1004708"
+        },
+        {
+          "value": 0,
+          "key": "1002000"
+        },
+        {
+          "value": 0,
+          "key": "1004748"
+        },
+        {
+          "value": 0,
+          "key": "1004705"
+        }
+      ],
+      "account_resource": {
+        "latest_consume_time_for_energy": 1646713299000
+      },
+      "active_permission": [
+        {
+          "operations": "7fff1fc0033e0300000000000000000000000000000000000000000000000000",
+          "keys": [
+            {
+              "address": "TBYQhtCEcmEeC84gzqxPUaudVmq7qug8Et",
+              "weight": 1
+            }
+          ],
+          "threshold": 1,
+          "id": 2,
+          "type": "Active",
+          "permission_name": "active"
+        }
+      ],
+      "assetV2": [
+        {
+          "value": 20000,
+          "key": "1004698"
+        },
+        {
+          "value": 30000,
+          "key": "1004708"
+        },
+        {
+          "value": 10000,
+          "key": "1004705"
+        },
+        {
+          "value": 888,
+          "key": "1002000"
+        },
+        {
+          "value": 10000000000,
+          "key": "1004667"
+        },
+        {
+          "value": 1360126,
+          "key": "1004536"
+        },
+        {
+          "value": 200000,
+          "key": "1004748"
+        },
+        {
+          "value": 666,
+          "key": "1001611"
+        }
+      ],
+      "address": "41113f9f57058f8d503801803d6ca0837495e3150f",
+      "create_time": 1646713179000,
+      "trc20": [
+      ],
+      "latest_consume_free_time": 1646713599000
+    }
+  ],
+  "success": true,
+  "meta": {
+    "at": 1658158792259,
+    "page_size": 1
+  }
+}

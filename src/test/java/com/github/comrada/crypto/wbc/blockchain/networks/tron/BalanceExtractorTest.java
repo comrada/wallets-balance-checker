@@ -14,19 +14,25 @@ class BalanceExtractorTest {
   @Test
   void balanceOnly() throws IOException {
     BigDecimal balance = getBalanceFromFile("account-response-without-frozen.json");
-    assertEquals(new BigDecimal("2052504986.906760"), balance);
+    assertEquals(new BigDecimal("2052504986906760"), balance);
   }
 
   @Test
   void balanceWithFrozenBalance() throws IOException {
     BigDecimal balance = getBalanceFromFile("account-response-with-frozen.json");
-    assertEquals(new BigDecimal("109635.731990"), balance);
+    assertEquals(new BigDecimal("109635731990"), balance);
   }
 
   @Test
   void balanceWithFrozenBalanceAndFrozenEnergy() throws IOException {
     BigDecimal balance = getBalanceFromFile("account-response-with-frozen-balance-and-gas.json");
-    assertEquals(new BigDecimal("160488.731990"), balance);
+    assertEquals(new BigDecimal("160488731990"), balance);
+  }
+
+  @Test
+  void whenThereIsNoTrxAsset_thenReturnsZero() throws IOException {
+    BigDecimal balance = getBalanceFromFile("account-response-without-balance.json");
+    assertEquals(BigDecimal.ZERO, balance);
   }
 
   private BigDecimal getBalanceFromFile(String filaName) throws IOException {
