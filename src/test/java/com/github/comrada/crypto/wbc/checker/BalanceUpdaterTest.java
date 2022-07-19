@@ -53,6 +53,7 @@ class BalanceUpdaterTest {
     return new Wallet(
         "Ripple",
         "r3qZhy6sKxn43uaHMnEMKQ6tpzhCo18ULZ",
+        "XRP",
         balance,
         false,
         WalletStatus.OK

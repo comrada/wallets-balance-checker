@@ -84,8 +84,9 @@ public class NetworksConfig {
 
   @Bean
   @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Bitcoin')")
-  BlockchainApi bitcoinWebServicesBalancer(RoundRobinBalancer roundRobinBalancer) {
-    return new BitcoinRestApi(roundRobinBalancer);
+  BlockchainApi bitcoinWebServicesBalancer(NetworkParameters parameters, RoundRobinBalancer roundRobinBalancer) {
+    NetworkConfig stellarConfig = parameters.getConfigFor(BitcoinRestApi.BLOCKCHAIN_NAME);
+    return new BitcoinRestApi(stellarConfig, roundRobinBalancer);
   }
 
   @Bean

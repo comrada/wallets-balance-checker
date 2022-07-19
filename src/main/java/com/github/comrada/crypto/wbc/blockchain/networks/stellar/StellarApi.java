@@ -1,11 +1,14 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.stellar;
 
+import static java.util.Collections.singleton;
+
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.stream.Stream;
 import org.stellar.sdk.Server;
 import org.stellar.sdk.requests.ErrorResponse;
@@ -15,18 +18,26 @@ import org.stellar.sdk.responses.AccountResponse.Balance;
 public final class StellarApi implements BlockchainApi, AutoCloseable {
 
   public static final String BLOCKCHAIN_NAME = "Stellar";
+  public static final Set<String> SUPPORTED_ASSETS = singleton("XLM");
   private final Server server;
   private final String asset;
+  private final Set<String> usingAssets;
 
   public StellarApi(NetworkConfig networkConfig) {
+    asset = networkConfig.getStringParam("asset-id");
+    usingAssets = networkConfig.getArray("assets", SUPPORTED_ASSETS);
     String horizonUrl = networkConfig.getStringParam("horizon-url");
     server = new Server(horizonUrl);
-    asset = networkConfig.getStringParam("asset");
   }
 
   @Override
   public String name() {
     return BLOCKCHAIN_NAME;
+  }
+
+  @Override
+  public Set<String> assets() {
+    return usingAssets;
   }
 
   @Override

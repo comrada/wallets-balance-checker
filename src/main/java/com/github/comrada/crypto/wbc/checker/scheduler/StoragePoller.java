@@ -9,6 +9,7 @@ import com.github.comrada.crypto.wbc.checker.WalletStorage;
 import com.github.comrada.crypto.wbc.domain.Wallet;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.time.Duration;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -28,11 +29,11 @@ public class StoragePoller implements AutoCloseable {
   private final WalletStorage walletStorage;
   private final DelayGenerator retryDelayGenerator;
   private final DelayGenerator pollDelayGenerator;
-  private final Supplier<Set<String>> blockchainsToPoll;
+  private final Supplier<Map<String, Set<String>>> blockchainsToPoll;
   private final Consumer<Wallet> walletHandler;
 
   public StoragePoller(WalletStorage walletStorage, DelayGenerator retryDelayGenerator,
-      DelayGenerator pollDelayGenerator, Supplier<Set<String>> blockchainsToPoll, Consumer<Wallet> walletHandler) {
+      DelayGenerator pollDelayGenerator, Supplier<Map<String, Set<String>>> blockchainsToPoll, Consumer<Wallet> walletHandler) {
     this.walletStorage = requireNonNull(walletStorage);
     this.retryDelayGenerator = requireNonNull(retryDelayGenerator);
     this.pollDelayGenerator = requireNonNull(pollDelayGenerator);

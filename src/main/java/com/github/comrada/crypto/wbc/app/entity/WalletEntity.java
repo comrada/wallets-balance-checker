@@ -20,7 +20,7 @@ import javax.persistence.UniqueConstraint;
         @Index(name = "IDX_BALANCE", columnList = "balance"),
         @Index(name = "IDX_STATUS", columnList = "status")
     },
-    uniqueConstraints = @UniqueConstraint(columnNames = {"blockchain", "address"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"blockchain", "address", "asset"})
 )
 public class WalletEntity {
 
@@ -94,6 +94,10 @@ public class WalletEntity {
     return id.getAddress();
   }
 
+  public String getAsset() {
+    return id.getAsset();
+  }
+
   public WalletStatus getStatus() {
     return status;
   }
@@ -121,7 +125,7 @@ public class WalletEntity {
 
   @Override
   public String toString() {
-    return "Blockchain: " + id.getBlockchain() + ", address: " + id.getAddress() +
+    return "Blockchain: " + id.getBlockchain() + ", address: " + id.getAddress() + ", asset: " + id.getAsset() +
         (balance != null ? ", balance: " + balance : "");
   }
 }

@@ -1,6 +1,7 @@
 package com.github.comrada.crypto.wbc.app.repository;
 
 import static java.util.Collections.singleton;
+import static java.util.Collections.singletonMap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,7 +37,7 @@ class WalletSpringAdapterIntegrationTest {
   @Test
   @Sql("wallets.sql")
   void whenSelectForUpdateCalled_thenWalletIsLocked() {
-    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
+    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singletonMap("Ripple", singleton("XRP")));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertEquals("Ripple", xrpWallet.blockchain());
@@ -46,17 +47,17 @@ class WalletSpringAdapterIntegrationTest {
   @Test
   @Sql("wallets.sql")
   void update() {
-    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
+    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singletonMap("Ripple", singleton("XRP")));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertNull(xrpWallet.balance());
 
-    Wallet walletForUpdate = new Wallet(xrpWallet.blockchain(), xrpWallet.address(), BigDecimal.valueOf(123),
-        xrpWallet.exchange(), WalletStatus.OK);
+    Wallet walletForUpdate = new Wallet(xrpWallet.blockchain(), xrpWallet.address(), xrpWallet.asset(),
+        BigDecimal.valueOf(123), xrpWallet.exchange(), WalletStatus.OK);
     testStorage.update(walletForUpdate);
 
     Optional<WalletEntity> foundUpdated = testRepository.findById(
-        new WalletId(xrpWallet.blockchain(), xrpWallet.address()));
+        new WalletId(xrpWallet.blockchain(), xrpWallet.address(), xrpWallet.asset()));
     assertTrue(foundUpdated.isPresent());
     entityManager.refresh(foundUpdated.get());
     assertEquals(BigDecimal.valueOf(123).setScale(2, RoundingMode.UP), foundUpdated.get().getBalance());
@@ -65,7 +66,7 @@ class WalletSpringAdapterIntegrationTest {
   @Test
   @Sql("wallets.sql")
   void invalidate() {
-    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singleton("Ripple"));
+    Optional<Wallet> foundXrpWallet = testStorage.selectForUpdate(singletonMap("Ripple", singleton("XRP")));
     assertTrue(foundXrpWallet.isPresent());
     Wallet xrpWallet = foundXrpWallet.get();
     assertEquals(WalletStatus.OK, xrpWallet.status());
@@ -73,7 +74,7 @@ class WalletSpringAdapterIntegrationTest {
     testStorage.invalidate(xrpWallet);
 
     Optional<WalletEntity> foundUpdated = testRepository.findById(
-        new WalletId(xrpWallet.blockchain(), xrpWallet.address()));
+        new WalletId(xrpWallet.blockchain(), xrpWallet.address(), xrpWallet.asset()));
     assertTrue(foundUpdated.isPresent());
     entityManager.refresh(foundUpdated.get());
     assertEquals(WalletStatus.INVALID, foundUpdated.get().getStatus());

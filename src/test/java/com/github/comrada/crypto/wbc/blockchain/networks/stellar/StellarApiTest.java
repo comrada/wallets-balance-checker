@@ -23,7 +23,8 @@ class StellarApiTest {
     server.start();
     networkConfig = new NetworkParameters.Blockchain("Stellar", Map.of(
         "horizon-url", server.url("").toString(),
-        "asset", "native"
+        "asset-id", "native",
+        "assets", "XLM"
     ));
   }
 

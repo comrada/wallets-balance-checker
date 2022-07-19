@@ -2,23 +2,30 @@ app:
   network:
     enabled-networks: ${APP_ENABLED_NETWORKS:Ethereum,Ripple}
     blockchains:
+      - name: Bitcoin
+        parameters:
+          assets: BTC
       - name: Ethereum
         parameters:
           node-url: ${APP_ETHEREUM_NODE_URL}
           timeout-sec: ${APP_ETHEREUM_TIMEOUT:10}
+          assets: ETH
       - name: Ripple
         parameters:
           rippled-url: ${APP_RIPPLED_URL}
+          assets: XRP
       - name: Stellar
         parameters:
           horizon-url: ${APP_STELLAR_URL}
-          asset: ${APP_STELLAR_ASSET:native}
+          asset-id: ${APP_STELLAR_ASSET:native}
+          assets: XLM
       - name: Binance Chain
         parameters:
-          asset: ${APP_BINANCE_ASSET:BNB}
+          assets: BNB
       - name: Tron
         parameters:
           api-key: ${APP_TRON_API_KEY}
+          assets: TRX
   storage-poller:
     delay-generators:
       retry-delay:
