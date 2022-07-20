@@ -15,14 +15,16 @@ public interface WalletRepository extends JpaRepository<WalletEntity, WalletId> 
   @Modifying(flushAutomatically = true)
   @Query(value = """
       update Wallet set locked = true
-      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and locked = false
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and
+      id.asset = :#{#walletId.asset} and locked = false
       """)
   void lock(WalletId walletId);
 
   @Modifying(flushAutomatically = true)
   @Query(value = """
       update Wallet set locked = false, checkedAt = :checkedAt
-      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and locked = true
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and
+      id.asset = :#{#walletId.asset} and locked = true
       """)
   void unlock(WalletId walletId, Instant checkedAt);
 
@@ -30,7 +32,8 @@ public interface WalletRepository extends JpaRepository<WalletEntity, WalletId> 
   @Query(value = """
       update Wallet set balance = :#{#walletEntity.balance}, checkedAt = :#{#walletEntity.checkedAt},
       locked = :#{#walletEntity.locked}
-      where id.blockchain = :#{#walletEntity.id.blockchain} and id.address = :#{#walletEntity.id.address}
+      where id.blockchain = :#{#walletEntity.id.blockchain} and id.address = :#{#walletEntity.id.address} and
+      id.asset = :#{#walletEntity.id.asset}
       """)
   void update(WalletEntity walletEntity);
 
@@ -38,7 +41,8 @@ public interface WalletRepository extends JpaRepository<WalletEntity, WalletId> 
   @Modifying(flushAutomatically = true)
   @Query(value = """
       update Wallet set status = :status, locked = false, checkedAt = :checkedAt
-      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address}
+      where id.blockchain = :#{#walletId.blockchain} and id.address = :#{#walletId.address} and
+      id.asset = :#{#walletId.asset}
       """)
   void changeStatus(WalletId walletId, WalletStatus status, Instant checkedAt);
 }
