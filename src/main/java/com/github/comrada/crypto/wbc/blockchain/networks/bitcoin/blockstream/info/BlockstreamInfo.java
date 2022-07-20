@@ -6,6 +6,7 @@ import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.util.Set;
@@ -31,9 +32,9 @@ public class BlockstreamInfo extends BaseHttpClient implements BlockchainApi {
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    Response response = get(ADDRESS_URL + address, Response.class);
-    if (!response.address().equals(address)) {
+  public BigDecimal balance(Wallet wallet) {
+    Response response = get(ADDRESS_URL + wallet.address(), Response.class);
+    if (!response.address().equals(wallet.address())) {
       throw new NetworkException(
           "Blockstream.info returned a response with a different balance for the wallet than requested.");
     }

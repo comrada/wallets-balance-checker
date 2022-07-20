@@ -6,6 +6,7 @@ import static java.util.Objects.requireNonNull;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.RoundRobinBalancer;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class BitcoinRestApi implements BlockchainApi {
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    return balancer.getBalance(address);
+  public BigDecimal balance(Wallet wallet) {
+    return balancer.getBalance(wallet);
   }
 }

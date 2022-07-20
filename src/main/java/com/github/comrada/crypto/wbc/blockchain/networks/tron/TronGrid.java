@@ -6,6 +6,7 @@ import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.util.Map;
@@ -36,8 +37,8 @@ public final class TronGrid extends BaseHttpClient implements BlockchainApi {
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    Account account = get(ACCOUNT_URL.formatted(address), Account.class);
+  public BigDecimal balance(Wallet wallet) {
+    Account account = get(ACCOUNT_URL.formatted(wallet.address()), Account.class);
     return balanceExtractor.extract(account).movePointLeft(6);
   }
 }

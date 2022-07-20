@@ -5,6 +5,7 @@ import static java.util.Collections.singleton;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Set;
@@ -40,9 +41,9 @@ public final class EthereumApi implements BlockchainApi, AutoCloseable {
   }
 
   @Override
-  public BigDecimal balance(String address) {
+  public BigDecimal balance(Wallet wallet) {
     try {
-      EthGetBalance ethGetBalance = requestBalance(address);
+      EthGetBalance ethGetBalance = requestBalance(wallet.address());
       return new BigDecimal(ethGetBalance.getBalance())
           .divide(new BigDecimal(1_000_000_000_000_000_000L), 18, RoundingMode.HALF_UP);
     } catch (Exception e) {

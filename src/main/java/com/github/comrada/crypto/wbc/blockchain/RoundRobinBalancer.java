@@ -8,6 +8,7 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 import com.github.comrada.crypto.wbc.blockchain.exception.NoLiveServicesException;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import com.google.common.collect.Iterables;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import java.math.BigDecimal;
@@ -45,21 +46,21 @@ public final class RoundRobinBalancer implements AutoCloseable {
     return newSingleThreadExecutor(namedThreadFactory);
   }
 
-  public BigDecimal getBalance(String address) {
+  public BigDecimal getBalance(Wallet wallet) {
     checkLiveServices();
     BlockchainApi service = services.next();
     if (serviceFailures.get(service).get() <= MAX_FAILURES) {
       try {
-        BigDecimal balance = service.balance(address);
+        BigDecimal balance = service.balance(wallet);
         resetFailuresFor(service);
         return balance;
       } catch (Exception e) {
         int failures = incrementFailuresFor(service);
         logFailures(service, failures);
-        return getBalance(address);
+        return getBalance(wallet);
       }
     }
-    return getBalance(address);
+    return getBalance(wallet);
   }
 
   private void logFailures(BlockchainApi service, int failures) {

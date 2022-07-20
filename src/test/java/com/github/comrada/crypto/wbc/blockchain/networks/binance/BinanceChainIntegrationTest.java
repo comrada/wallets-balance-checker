@@ -1,5 +1,6 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.binance;
 
+import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static com.github.comrada.crypto.wbc.TestUtils.readFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -50,7 +51,7 @@ class BinanceChainIntegrationTest {
     when(response.body()).thenReturn(accountResponse);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
 
-    BigDecimal balance = testNetwork.balance("bnb1fnd0k5l4p3ck2j9x9dp36chk059w977pszdgdz");
+    BigDecimal balance = testNetwork.balance(mockWallet("bnb1fnd0k5l4p3ck2j9x9dp36chk059w977pszdgdz"));
     assertEquals(new BigDecimal("116495.80984738"), balance);
   }
 }

@@ -1,5 +1,6 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.info;
 
+import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
@@ -49,7 +50,7 @@ class BlockstreamInfoTest {
 
     ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
     BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client, responseMapper);
-    BigDecimal actualBalance = blockstreamInfo.balance("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3");
+    BigDecimal actualBalance = blockstreamInfo.balance(mockWallet("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3"));
     assertEquals(BigDecimal.valueOf(1731.23431080).setScale(8, RoundingMode.HALF_UP), actualBalance);
   }
 
@@ -81,7 +82,8 @@ class BlockstreamInfoTest {
 
     ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
     BlockstreamInfo blockstreamInfo = new BlockstreamInfo(client, responseMapper);
-    assertThrows(NetworkException.class, () -> blockstreamInfo.balance("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3"));
+    assertThrows(NetworkException.class,
+        () -> blockstreamInfo.balance(mockWallet("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3")));
   }
 
   private HttpRequest buildHttpRequest() {

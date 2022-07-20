@@ -19,7 +19,7 @@ public class NetworksManager {
 
   public BigDecimal balance(Wallet wallet) {
     BlockchainApi blockchainApi = networks.get(wallet.blockchain());
-    return blockchainApi.balance(wallet.address());
+    return blockchainApi.balance(wallet);
   }
 
   public Map<String, Set<String>> blockchains() {

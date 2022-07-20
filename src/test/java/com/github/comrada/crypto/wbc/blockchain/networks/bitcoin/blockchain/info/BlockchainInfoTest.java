@@ -1,5 +1,6 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockchain.info;
 
+import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -39,7 +40,7 @@ class BlockchainInfoTest {
 
     ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
     BlockchainInfo blockchainInfo = new BlockchainInfo(client, responseMapper);
-    BigDecimal actualBalance = blockchainInfo.balance("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3");
+    BigDecimal actualBalance = blockchainInfo.balance(mockWallet("15H8vDVWZvySPnYYTd4FmRUXnMAqykKTN3"));
     assertEquals(BigDecimal.valueOf(1731.23431080).setScale(8, RoundingMode.HALF_UP), actualBalance);
   }
 }

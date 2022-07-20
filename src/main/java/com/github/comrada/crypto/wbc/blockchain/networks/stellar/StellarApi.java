@@ -6,6 +6,7 @@ import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -41,7 +42,8 @@ public final class StellarApi implements BlockchainApi, AutoCloseable {
   }
 
   @Override
-  public BigDecimal balance(String address) {
+  public BigDecimal balance(Wallet wallet) {
+    String address = wallet.address();
     try {
       AccountResponse account = server.accounts().account(address);
       return Stream.of(account.getBalances())

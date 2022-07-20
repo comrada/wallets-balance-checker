@@ -1,5 +1,6 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.tron;
 
+import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static com.github.comrada.crypto.wbc.TestUtils.readFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -50,7 +51,7 @@ class TronGridTest {
     String accountResponse = readFile(TronGridTest.class, "account-response-with-frozen-balance-and-gas.json");
     when(response.body()).thenReturn(accountResponse);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
-    BigDecimal balance = testNetwork.balance("TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz");
+    BigDecimal balance = testNetwork.balance(mockWallet("TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz"));
     assertEquals(new BigDecimal("160488.731990"), balance);
   }
 }

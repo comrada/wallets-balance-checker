@@ -5,6 +5,7 @@ import static java.util.Collections.singleton;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.util.Set;
 import okhttp3.HttpUrl;
@@ -38,8 +39,8 @@ public final class RippleNet implements BlockchainApi {
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    Address classicAddress = Address.of(address);
+  public BigDecimal balance(Wallet wallet) {
+    Address classicAddress = Address.of(wallet.address());
     AccountInfoRequestParams requestParams = AccountInfoRequestParams.of(classicAddress);
     try {
       AccountInfoResult accountInfoResult = client.accountInfo(requestParams);

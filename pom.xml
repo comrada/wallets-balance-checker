@@ -21,7 +21,7 @@
     <java.version>17</java.version>
     <spring-native.version>0.12.0</spring-native.version>
     <guava.version>31.1-jre</guava.version>
-    <web3j.version>5.0.0</web3j.version>
+    <web3j.version>4.9.3</web3j.version>
     <xrpl4j.version>2.3.0</xrpl4j.version>
     <okhttp3.version>4.10.0</okhttp3.version>
     <stellar-sdk.version>0.34.1</stellar-sdk.version>

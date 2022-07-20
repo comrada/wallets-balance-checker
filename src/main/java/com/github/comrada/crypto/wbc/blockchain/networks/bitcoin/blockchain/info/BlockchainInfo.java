@@ -5,6 +5,7 @@ import static java.util.Collections.singleton;
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.util.Set;
@@ -30,8 +31,8 @@ public class BlockchainInfo extends BaseHttpClient implements BlockchainApi {
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    Response response = get(ADDRESS_URL + address, Response.class);
-    return response.getFinalBalance(address);
+  public BigDecimal balance(Wallet wallet) {
+    Response response = get(ADDRESS_URL + wallet.address(), Response.class);
+    return response.getFinalBalance(wallet.address());
   }
 }

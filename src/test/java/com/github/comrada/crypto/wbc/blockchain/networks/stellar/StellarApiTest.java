@@ -1,5 +1,6 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.stellar;
 
+import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static com.github.comrada.crypto.wbc.TestUtils.readFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -31,7 +32,8 @@ class StellarApiTest {
   @Test
   void balance() {
     try (StellarApi stellarApi = new StellarApi(networkConfig)) {
-      BigDecimal actualBalance = stellarApi.balance("GCWEER57MBVRXA4I426VL3PSWWM72SSZ3AZ5TGBDSWJMTDFVCABWNZIF");
+      BigDecimal actualBalance = stellarApi.balance(
+          mockWallet("GCWEER57MBVRXA4I426VL3PSWWM72SSZ3AZ5TGBDSWJMTDFVCABWNZIF"));
       assertEquals(new BigDecimal("1253814448.0501659"), actualBalance);
     }
   }

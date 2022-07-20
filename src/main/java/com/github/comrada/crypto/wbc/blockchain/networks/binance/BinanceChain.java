@@ -7,6 +7,7 @@ import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
+import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
 import java.net.http.HttpClient;
 import java.util.List;
@@ -35,11 +36,11 @@ public final class BinanceChain extends BaseHttpClient implements BlockchainApi 
   }
 
   @Override
-  public BigDecimal balance(String address) {
-    Account account = get(ACCOUNT_URL + address, Account.class);
+  public BigDecimal balance(Wallet wallet) {
+    Account account = get(ACCOUNT_URL + wallet.address(), Account.class);
     List<Balance> balances = account.getBalances();
     if (balances == null || balances.isEmpty()) {
-      throw new InvalidWalletException("Wallet '" + address + "' does not have balances");
+      throw new InvalidWalletException("Wallet [" + wallet + "] does not have balances");
     }
     return balances.stream()
         .filter(balance -> usingAssets.contains(balance.getSymbol()))

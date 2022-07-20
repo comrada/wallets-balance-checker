@@ -9,6 +9,9 @@ import static org.mockito.Mockito.when;
 
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.blockchain.exception.NoLiveServicesException;
+import com.github.comrada.crypto.wbc.domain.Wallet;
+import com.github.comrada.crypto.wbc.domain.WalletStatus;
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -21,13 +24,15 @@ class RoundRobinBalancerIntegrationTest {
   private RoundRobinBalancer balancer;
   private BlockchainApi service1;
   private BlockchainApi service2;
+  private Wallet wallet;
 
   @BeforeEach
   void initBalancer() {
+    wallet = new Wallet("test", "addr1", "TKN", BigDecimal.ZERO, false, WalletStatus.OK);
     service1 = mock(BlockchainApi.class);
-    when(service1.balance("addr1")).thenThrow(new NetworkException(""));
+    when(service1.balance(wallet)).thenThrow(new NetworkException(""));
     service2 = mock(BlockchainApi.class);
-    when(service2.balance("addr1")).thenThrow(new NetworkException(""));
+    when(service2.balance(wallet)).thenThrow(new NetworkException(""));
     balancer = new RoundRobinBalancer(List.of(service1, service2), Duration.ofSeconds(3));
   }
 
@@ -38,28 +43,28 @@ class RoundRobinBalancerIntegrationTest {
 
   @Test
   void whenServicesThrowExceptions_thenTheyAreCalledOnlyThreeTimes() {
-    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance("addr1"));
-    verify(service1, times(3)).balance("addr1");
-    verify(service2, times(3)).balance("addr1");
+    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance(wallet));
+    verify(service1, times(3)).balance(wallet);
+    verify(service2, times(3)).balance(wallet);
   }
 
   @Test
   void whenFrozenServicesReturnAfterTimeout_thenTheyContinueToCall() throws InterruptedException {
-    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance("addr1"));
+    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance(wallet));
     await()
         .atMost(5, TimeUnit.SECONDS)
         .untilAsserted(() -> {
-          verify(service1, times(3)).balance("addr1");
-          verify(service2, times(3)).balance("addr1");
+          verify(service1, times(3)).balance(wallet);
+          verify(service2, times(3)).balance(wallet);
         });
 
     Thread.sleep(4000);
-    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance("addr1"));
+    assertThrows(NoLiveServicesException.class, () -> balancer.getBalance(wallet));
     await()
         .atMost(5, TimeUnit.SECONDS)
         .untilAsserted(() -> {
-          verify(service1, times(6)).balance("addr1");
-          verify(service2, times(6)).balance("addr1");
+          verify(service1, times(6)).balance(wallet);
+          verify(service2, times(6)).balance(wallet);
         });
   }
 }
