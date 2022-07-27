@@ -9,7 +9,7 @@ app:
         parameters:
           node-url: ${APP_ETHEREUM_NODE_URL}
           timeout-sec: ${APP_ETHEREUM_TIMEOUT:10}
-          assets: ETH
+          assets: ETH,USDT
       - name: Ripple
         parameters:
           rippled-url: ${APP_RIPPLED_URL}
