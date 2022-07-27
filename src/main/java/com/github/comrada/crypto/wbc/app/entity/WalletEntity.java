@@ -18,7 +18,8 @@ import javax.persistence.UniqueConstraint;
     indexes = {
         @Index(name = "IDX_CHECKED_AT", columnList = "checked_at"),
         @Index(name = "IDX_BALANCE", columnList = "balance"),
-        @Index(name = "IDX_STATUS", columnList = "status")
+        @Index(name = "IDX_STATUS", columnList = "status"),
+        @Index(name = "IDX_CONTRACT", columnList = "contract")
     },
     uniqueConstraints = @UniqueConstraint(columnNames = {"blockchain", "address", "asset"})
 )
@@ -38,6 +39,12 @@ public class WalletEntity {
 
   @Column
   private boolean locked = false;
+
+  @Column
+  private boolean token = false;
+
+  @Column
+  private String contract;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false, length = 16)
@@ -104,6 +111,22 @@ public class WalletEntity {
 
   public void setStatus(WalletStatus status) {
     this.status = status;
+  }
+
+  public boolean isToken() {
+    return token;
+  }
+
+  public void setToken(boolean token) {
+    this.token = token;
+  }
+
+  public String getContract() {
+    return contract;
+  }
+
+  public void setContract(String contract) {
+    this.contract = contract;
   }
 
   @Override

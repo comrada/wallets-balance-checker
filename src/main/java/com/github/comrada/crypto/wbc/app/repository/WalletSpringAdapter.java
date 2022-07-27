@@ -40,7 +40,8 @@ public class WalletSpringAdapter implements WalletStorage {
                 (w.checked_at <= current_timestamp - interval '1' day or
                 w.checked_at is null) and
                 w.locked = false and
-                w.status = 'OK'
+                w.status = 'OK' and
+                ((w.token = true and w.contract is not null) or (w.token = false))
             limit 1
             """.formatted(buildBlockchainsCondition(blockchains)), WalletEntity.class)
         .getResultStream().findFirst();

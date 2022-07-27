@@ -7,13 +7,15 @@ import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import com.github.comrada.crypto.wbc.domain.Wallet;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.math.BigInteger;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterName;
 import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.utils.Convert;
+import org.web3j.utils.Convert.Unit;
 
 public final class EthereumApi implements BlockchainApi, AutoCloseable {
 
@@ -43,12 +45,26 @@ public final class EthereumApi implements BlockchainApi, AutoCloseable {
   @Override
   public BigDecimal balance(Wallet wallet) {
     try {
-      EthGetBalance ethGetBalance = requestBalance(wallet.address());
-      return new BigDecimal(ethGetBalance.getBalance())
-          .divide(new BigDecimal(1_000_000_000_000_000_000L), 18, RoundingMode.HALF_UP);
+      if (wallet.asset().equals("ETH")) {
+        return getEthBalance(wallet.address());
+      }
+      return getContractBalance(wallet);
     } catch (Exception e) {
       throw new NetworkException(e);
     }
+  }
+
+  private BigDecimal getEthBalance(String address) throws Exception {
+    EthGetBalance ethGetBalance = requestBalance(address);
+    return convertBalance(ethGetBalance.getBalance());
+  }
+
+  private BigDecimal getContractBalance(Wallet wallet) {
+    throw new IllegalArgumentException("Obtaining the balance of the contract is not implemented");
+  }
+
+  private BigDecimal convertBalance(BigInteger weiBalance) {
+    return Convert.fromWei(weiBalance.toString(), Unit.ETHER);
   }
 
   private EthGetBalance requestBalance(String address) throws Exception {

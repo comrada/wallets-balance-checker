@@ -8,12 +8,19 @@ public record Wallet(
     String asset,
     BigDecimal balance,
     boolean exchange,
-    WalletStatus status
+    WalletStatus status,
+    boolean token,
+    String contract
 ) {
 
+  public Wallet(String blockchain, String address, String asset, BigDecimal balance, boolean exchange,
+      WalletStatus status) {
+    this(blockchain, address, asset, balance, exchange, status, false, null);
+  }
+
   public static Wallet newBalance(Wallet oldWallet, BigDecimal newBalance) {
-    return new Wallet(oldWallet.blockchain, oldWallet.address(), oldWallet.asset(), newBalance, oldWallet.exchange(),
-        oldWallet.status);
+    return new Wallet(oldWallet.blockchain(), oldWallet.address(), oldWallet.asset(), newBalance, oldWallet.exchange(),
+        oldWallet.status(), oldWallet.token(), oldWallet.contract());
   }
 
   @Override

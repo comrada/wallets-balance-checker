@@ -17,6 +17,8 @@ public final class WalletMapper {
     entity.setBalance(wallet.balance());
     entity.setExchange(wallet.exchange());
     entity.setStatus(wallet.status());
+    entity.setToken(wallet.token());
+    entity.setContract(wallet.contract());
     return entity;
   }
 
@@ -27,7 +29,9 @@ public final class WalletMapper {
         walletEntity.getAsset(),
         walletEntity.getBalance(),
         walletEntity.isExchange(),
-        walletEntity.getStatus()
+        walletEntity.getStatus(),
+        walletEntity.isToken(),
+        walletEntity.getContract()
     );
   }
 }

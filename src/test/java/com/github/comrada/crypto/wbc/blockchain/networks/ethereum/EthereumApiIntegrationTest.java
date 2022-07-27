@@ -1,10 +1,9 @@
-package com.github.comrada.crypto.wbc.blockchain.ethereum;
+package com.github.comrada.crypto.wbc.blockchain.networks.ethereum;
 
 import static com.github.comrada.crypto.wbc.TestUtils.mockWallet;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.github.comrada.crypto.wbc.app.config.NetworkParameters;
-import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -36,8 +35,9 @@ class EthereumApiIntegrationTest {
   @Test
   void balance() {
     try (EthereumApi ethereumApi = new EthereumApi(networkConfig)) {
-      BigDecimal actualBalance = ethereumApi.balance(mockWallet("0x72A53cDBBcc1b9efa39c834A540550e23463AAcB"));
-      assertEquals(new BigDecimal("25387.199088773893314510"), actualBalance);
+      BigDecimal actualBalance = ethereumApi.balance(
+          mockWallet("Ethereum", "0x72A53cDBBcc1b9efa39c834A540550e23463AAcB", "ETH"));
+      assertEquals(new BigDecimal("25387.19908877389331451"), actualBalance);
     }
   }
 
