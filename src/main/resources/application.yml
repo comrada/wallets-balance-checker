@@ -9,7 +9,7 @@ app:
         parameters:
           node-url: ${APP_ETHEREUM_NODE_URL}
           timeout-sec: ${APP_ETHEREUM_TIMEOUT:10}
-          assets: ETH,USDT
+          assets: ${APP_ETHEREUM_ASSETS:ETH,USDT}
       - name: Ripple
         parameters:
           rippled-url: ${APP_RIPPLED_URL}
@@ -25,7 +25,8 @@ app:
       - name: Tron
         parameters:
           api-key: ${APP_TRON_API_KEY}
-          assets: TRX
+          assets: ${APP_TRON_ASSETS:TRX,USDT}
+          grpc-private-key: ${APP_TRON_GRPC_PRIV_KEY}
   storage-poller:
     delay-generators:
       retry-delay:

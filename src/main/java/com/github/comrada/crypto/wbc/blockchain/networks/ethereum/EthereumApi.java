@@ -3,6 +3,7 @@ package com.github.comrada.crypto.wbc.blockchain.networks.ethereum;
 import static java.util.Collections.singleton;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
+import com.github.comrada.crypto.wbc.blockchain.exception.InvalidWalletException;
 import com.github.comrada.crypto.wbc.blockchain.exception.MissingContractException;
 import com.github.comrada.crypto.wbc.blockchain.exception.NetworkException;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
@@ -18,6 +19,7 @@ import org.web3j.protocol.core.methods.response.EthGetBalance;
 import org.web3j.protocol.http.HttpService;
 import org.web3j.tx.ReadonlyTransactionManager;
 import org.web3j.tx.TransactionManager;
+import org.web3j.tx.gas.ContractGasProvider;
 import org.web3j.tx.gas.DefaultGasProvider;
 import org.web3j.utils.Convert;
 import org.web3j.utils.Convert.Unit;
@@ -29,12 +31,14 @@ public final class EthereumApi implements BlockchainApi, AutoCloseable {
   private final Web3j client;
   private final int timeout;
   private final Set<String> usingAssets;
+  private final ContractGasProvider gasProvider;
 
   public EthereumApi(NetworkConfig networkConfig) {
     timeout = networkConfig.getIntegerParam("timeout-sec", 10);
     usingAssets = networkConfig.getArray("assets", SUPPORTED_ASSETS);
     String nodeUrl = networkConfig.getStringParam("node-url");
     client = Web3j.build(new HttpService(nodeUrl));
+    gasProvider = new DefaultGasProvider();
   }
 
   @Override
@@ -69,9 +73,14 @@ public final class EthereumApi implements BlockchainApi, AutoCloseable {
       throw new MissingContractException("Wallet '%s' has no contract".formatted(wallet.address()));
     }
     TransactionManager txManager = new ReadonlyTransactionManager(client, wallet.address());
-    ERC20 contract = ERC20.load(wallet.contract(), client, txManager, new DefaultGasProvider());
+    ERC20 contract = ERC20.load(wallet.contract(), client, txManager, gasProvider);
     BigInteger balance = contract.balanceOf(wallet.address()).send();
     BigInteger decimals = contract.decimals().send();
+    String symbol = contract.symbol().send();
+    if (!symbol.equals(wallet.asset())) {
+      throw new InvalidWalletException("The symbol '%s' in the contract '%s' does not match the wallet's asset '%s'"
+          .formatted(symbol, wallet.contract(), wallet.asset()));
+    }
     return new BigDecimal(balance).movePointLeft(decimals.intValue());
   }
 

@@ -32,4 +32,9 @@ public final class TestUtils {
   public static Wallet mockWallet(String blockchain, String address, String asset, BigDecimal balance) {
     return new Wallet(blockchain, address, asset, balance, false, WalletStatus.OK);
   }
+
+  public static Wallet mockWallet(String blockchain, String address, String asset, BigDecimal balance, boolean token,
+      String contract) {
+    return new Wallet(blockchain, address, asset, balance, false, WalletStatus.OK, token, contract);
+  }
 }

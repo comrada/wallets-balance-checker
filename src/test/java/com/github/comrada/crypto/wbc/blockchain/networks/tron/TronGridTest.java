@@ -9,6 +9,7 @@ import static org.mockito.Mockito.when;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.comrada.crypto.wbc.app.config.NetworkParameters;
 import com.github.comrada.crypto.wbc.app.mapper.JacksonResponseMapper;
+import com.github.comrada.crypto.wbc.blockchain.ContractFacade;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
 import java.math.BigDecimal;
@@ -29,11 +30,13 @@ class TronGridTest {
   @BeforeEach
   void initConfig() {
     NetworkConfig networkConfig = new NetworkParameters.Blockchain("Tron", Map.of(
-        "api-key", "fake-token"
+        "api-key", "fake-token",
+        "assets", "TRX"
     ));
     client = mock(HttpClient.class);
     ResponseMapper responseMapper = new JacksonResponseMapper(new ObjectMapper().findAndRegisterModules());
-    testNetwork = new TronGrid(client, responseMapper, networkConfig);
+    ContractFacade contractFacade = mock(ContractFacade.class);
+    testNetwork = new TronGrid(client, responseMapper, networkConfig, contractFacade);
   }
 
   @Test
@@ -51,7 +54,7 @@ class TronGridTest {
     String accountResponse = readFile(TronGridTest.class, "account-response-with-frozen-balance-and-gas.json");
     when(response.body()).thenReturn(accountResponse);
     when(client.send(request, BodyHandlers.ofString())).thenReturn(response);
-    BigDecimal balance = testNetwork.balance(mockWallet("TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz"));
+    BigDecimal balance = testNetwork.balance(mockWallet("Tron", "TYL7z7VSVRShLoJ6YRQMA4t9pSECt9ZLmz", "TRX"));
     assertEquals(new BigDecimal("160488.731990"), balance);
   }
 }

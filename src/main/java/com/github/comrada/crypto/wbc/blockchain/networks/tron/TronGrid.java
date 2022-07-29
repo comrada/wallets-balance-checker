@@ -1,8 +1,10 @@
 package com.github.comrada.crypto.wbc.blockchain.networks.tron;
 
 import static java.util.Collections.singleton;
+import static java.util.Objects.requireNonNull;
 
 import com.github.comrada.crypto.wbc.blockchain.BlockchainApi;
+import com.github.comrada.crypto.wbc.blockchain.ContractFacade;
 import com.github.comrada.crypto.wbc.blockchain.rest.BaseHttpClient;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
@@ -19,11 +21,14 @@ public final class TronGrid extends BaseHttpClient implements BlockchainApi {
   public static final Set<String> SUPPORTED_ASSETS = singleton("TRX");
   private final BalanceExtractor balanceExtractor;
   private final Set<String> usingAssets;
+  private final ContractFacade contractFacade;
 
-  public TronGrid(HttpClient client, ResponseMapper responseMapper, NetworkConfig networkConfig) {
+  public TronGrid(HttpClient client, ResponseMapper responseMapper, NetworkConfig networkConfig,
+      ContractFacade contractFacade) {
     super(client, responseMapper, Map.of("TRON-PRO-API-KEY", networkConfig.getStringParam("api-key")));
-    usingAssets = networkConfig.getArray("assets", SUPPORTED_ASSETS);
-    balanceExtractor = new BalanceExtractor();
+    this.contractFacade = requireNonNull(contractFacade);
+    this.usingAssets = networkConfig.getArray("assets", SUPPORTED_ASSETS);
+    this.balanceExtractor = new BalanceExtractor();
   }
 
   @Override
@@ -38,7 +43,10 @@ public final class TronGrid extends BaseHttpClient implements BlockchainApi {
 
   @Override
   public BigDecimal balance(Wallet wallet) {
-    Account account = get(ACCOUNT_URL.formatted(wallet.address()), Account.class);
-    return balanceExtractor.extract(account).movePointLeft(6);
+    if (wallet.asset().equals("TRX")) {
+      Account account = get(ACCOUNT_URL.formatted(wallet.address()), Account.class);
+      return balanceExtractor.extract(account).movePointLeft(6);
+    }
+    return contractFacade.balanceOf(wallet);
   }
 }

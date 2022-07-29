@@ -13,9 +13,9 @@
 
   <groupId>com.github.comrada.crypto</groupId>
   <artifactId>wallets-balance-checker</artifactId>
-  <version>1.6</version>
+  <version>1.7</version>
   <name>Wallets Balance Checker</name>
-  <description>Crypro wallets balance checker</description>
+  <description>Crypto wallets balance checker</description>
 
   <properties>
     <java.version>17</java.version>
@@ -25,6 +25,7 @@
     <xrpl4j.version>2.3.0</xrpl4j.version>
     <okhttp3.version>4.10.0</okhttp3.version>
     <stellar-sdk.version>0.34.1</stellar-sdk.version>
+    <tron4j.version>1.0.0</tron4j.version>
   </properties>
 
   <dependencies>
@@ -93,6 +94,11 @@
       <groupId>com.github.stellar</groupId>
       <artifactId>java-stellar-sdk</artifactId>
       <version>${stellar-sdk.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.comrada.tron4j</groupId>
+      <artifactId>client</artifactId>
+      <version>${tron4j.version}</version>
     </dependency>
 
     <!--	Tests	-->
