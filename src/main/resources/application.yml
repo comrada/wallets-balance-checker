@@ -32,8 +32,8 @@ app:
       retry-delay:
         type: LIMITED_FIXED
         limited-fixed-generator:
-          delay: 60s
-          retry-limit: 3
+          delay: ${APP_ERROR_RETRY_DELAY:60s}
+          retry-limit: ${APP_ERROR_RETRY_ATTEMPTS:3}
       poll-delay:
         type: RANDOM
         random-generator:

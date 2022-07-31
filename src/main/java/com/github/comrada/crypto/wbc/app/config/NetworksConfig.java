@@ -15,7 +15,7 @@ import com.github.comrada.crypto.wbc.blockchain.networks.bitcoin.blockstream.inf
 import com.github.comrada.crypto.wbc.blockchain.networks.ethereum.EthereumApi;
 import com.github.comrada.crypto.wbc.blockchain.networks.ripple.RippleNet;
 import com.github.comrada.crypto.wbc.blockchain.networks.stellar.StellarApi;
-import com.github.comrada.crypto.wbc.blockchain.networks.tron.Tron4jClient;
+import com.github.comrada.crypto.wbc.blockchain.networks.tron.JsonRpcClient;
 import com.github.comrada.crypto.wbc.blockchain.networks.tron.TronGrid;
 import com.github.comrada.crypto.wbc.blockchain.rest.ResponseMapper;
 import com.github.comrada.crypto.wbc.checker.NetworkConfig;
@@ -110,19 +110,19 @@ public class NetworksConfig {
 
   @Bean
   @ConditionalOnExpression("'${app.network.enabled-networks}'.contains('Tron')")
-  BlockchainApi tronBalance(NetworkParameters parameters, ResponseMapper responseMapper, Tron4jClient tron4jClient) {
+  BlockchainApi tronBalance(NetworkParameters parameters, ResponseMapper responseMapper, JsonRpcClient jsonRpcClient) {
     NetworkConfig tronConfig = parameters.getConfigFor(TronGrid.BLOCKCHAIN_NAME);
     HttpClient client = HttpClient.newBuilder()
         .followRedirects(Redirect.NORMAL)
         .connectTimeout(Duration.ofSeconds(20))
         .build();
 
-    return new TronGrid(client, responseMapper, tronConfig, tron4jClient);
+    return new TronGrid(client, responseMapper, tronConfig, jsonRpcClient);
   }
 
   @Bean
-  Tron4jClient tron4jClient(NetworkParameters parameters) {
+  JsonRpcClient tron4jClient(NetworkParameters parameters) {
     NetworkConfig tronConfig = parameters.getConfigFor(TronGrid.BLOCKCHAIN_NAME);
-    return new Tron4jClient(tronConfig.getStringParam("grpc-private-key"));
+    return new JsonRpcClient(tronConfig.getStringParam("grpc-private-key"));
   }
 }

@@ -25,7 +25,7 @@
     <xrpl4j.version>2.3.0</xrpl4j.version>
     <okhttp3.version>4.10.0</okhttp3.version>
     <stellar-sdk.version>0.34.1</stellar-sdk.version>
-    <tron4j.version>1.0.0</tron4j.version>
+    <tron4j.version>1.0.1</tron4j.version>
   </properties>
 
   <dependencies>
