@@ -3,7 +3,7 @@ package com.github.comrada.crypto.wbc.app.config;
 import com.github.comrada.crypto.wbc.app.repository.WalletRepository;
 import com.github.comrada.crypto.wbc.app.repository.WalletSpringAdapter;
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

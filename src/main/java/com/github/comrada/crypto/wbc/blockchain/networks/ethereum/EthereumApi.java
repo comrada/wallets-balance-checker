@@ -74,13 +74,13 @@ public final class EthereumApi implements BlockchainApi, AutoCloseable {
     }
     TransactionManager txManager = new ReadonlyTransactionManager(client, wallet.address());
     ERC20 contract = ERC20.load(wallet.contract(), client, txManager, gasProvider);
-    BigInteger balance = contract.balanceOf(wallet.address()).send();
-    BigInteger decimals = contract.decimals().send();
     String symbol = contract.symbol().send();
     if (!symbol.equals(wallet.asset())) {
       throw new InvalidWalletException("The symbol '%s' in the contract '%s' does not match the wallet's asset '%s'"
           .formatted(symbol, wallet.contract(), wallet.asset()));
     }
+    BigInteger balance = contract.balanceOf(wallet.address()).send();
+    BigInteger decimals = contract.decimals().send();
     return new BigDecimal(balance).movePointLeft(decimals.intValue());
   }
 

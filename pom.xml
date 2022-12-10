@@ -7,25 +7,24 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.7.2</version>
+    <version>3.0.0</version>
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
   <groupId>com.github.comrada.crypto</groupId>
   <artifactId>wallets-balance-checker</artifactId>
-  <version>1.7</version>
+  <version>1.8</version>
   <name>Wallets Balance Checker</name>
   <description>Crypto wallets balance checker</description>
 
   <properties>
     <java.version>17</java.version>
-    <spring-native.version>0.12.1</spring-native.version>
     <guava.version>31.1-jre</guava.version>
-    <web3j.version>4.9.3</web3j.version>
-    <xrpl4j.version>2.3.0</xrpl4j.version>
+    <web3j.version>4.9.5</web3j.version>
+    <xrpl4j.version>2.5.1</xrpl4j.version>
     <okhttp3.version>4.10.0</okhttp3.version>
-    <stellar-sdk.version>0.34.1</stellar-sdk.version>
-    <tron4j.version>1.0.1</tron4j.version>
+    <stellar-sdk.version>0.38.0</stellar-sdk.version>
+    <tron4j.version>1.0.2</tron4j.version>
   </properties>
 
   <dependencies>
@@ -42,11 +41,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-configuration-processor</artifactId>
       <optional>true</optional>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.experimental</groupId>
-      <artifactId>spring-native</artifactId>
-      <version>${spring-native.version}</version>
     </dependency>
 
     <!--	3rd Party libs	-->
@@ -130,33 +124,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <image>
-            <builder>paketobuildpacks/builder:tiny</builder>
-            <env>
-              <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
-            </env>
-          </image>
-          <excludes>
-            <exclude>
-              <groupId>org.projectlombok</groupId>
-              <artifactId>lombok</artifactId>
-            </exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.springframework.experimental</groupId>
-        <artifactId>spring-aot-maven-plugin</artifactId>
-        <version>${spring-native.version}</version>
-        <executions>
-          <execution>
-            <id>generate</id>
-            <goals>
-              <goal>generate</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
@@ -170,6 +137,10 @@
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/Comrada/tron4j</url>
     </repository>
   </repositories>
   <pluginRepositories>

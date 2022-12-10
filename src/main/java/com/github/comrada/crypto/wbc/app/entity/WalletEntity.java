@@ -1,17 +1,11 @@
 package com.github.comrada.crypto.wbc.app.entity;
 
 import com.github.comrada.crypto.wbc.domain.WalletStatus;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Index;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity(name = "Wallet")
 @Table(name = "wallets",

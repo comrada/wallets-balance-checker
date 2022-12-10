@@ -1,21 +1,22 @@
 package com.github.comrada.crypto.wbc.app.repository;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.Optional.empty;
-import static java.util.stream.Collectors.joining;
-
 import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
 import com.github.comrada.crypto.wbc.app.mapper.WalletMapper;
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
 import com.github.comrada.crypto.wbc.domain.Wallet;
 import com.github.comrada.crypto.wbc.domain.WalletStatus;
+import jakarta.persistence.EntityManager;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import javax.persistence.EntityManager;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
+
+import static java.util.Objects.requireNonNull;
+import static java.util.Optional.empty;
+import static java.util.stream.Collectors.joining;
 
 public class WalletSpringAdapter implements WalletStorage {
 

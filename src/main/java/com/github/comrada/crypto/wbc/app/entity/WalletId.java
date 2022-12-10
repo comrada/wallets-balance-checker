@@ -1,13 +1,14 @@
 package com.github.comrada.crypto.wbc.app.entity;
 
-import static java.util.Objects.requireNonNull;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.Builder;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import lombok.Builder;
+
+import static java.util.Objects.requireNonNull;
 
 @Builder
 @Embeddable

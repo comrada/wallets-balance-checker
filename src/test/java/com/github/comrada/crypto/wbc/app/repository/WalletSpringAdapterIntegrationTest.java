@@ -1,26 +1,25 @@
 package com.github.comrada.crypto.wbc.app.repository;
 
-import static java.util.Collections.singleton;
-import static java.util.Collections.singletonMap;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import com.github.comrada.crypto.wbc.app.entity.WalletEntity;
 import com.github.comrada.crypto.wbc.app.entity.WalletId;
 import com.github.comrada.crypto.wbc.checker.WalletStorage;
 import com.github.comrada.crypto.wbc.domain.Wallet;
 import com.github.comrada.crypto.wbc.domain.WalletStatus;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Optional;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.Optional;
+
+import static java.util.Collections.singleton;
+import static java.util.Collections.singletonMap;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
